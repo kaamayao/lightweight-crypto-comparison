@@ -1,0 +1,75 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[backend=biber,style=apa]{biblatex} % or style=ieee, numeric, etc.
+\usepackage{amsmath,amssymb}
+\usepackage{amsmath}
+\usepackage{hyperref} %Para colocar links que se pueden espichar
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{color,graphicx}%Para poder insertar graficas%
+\usepackage{graphics}
+\usepackage{blindtext}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{ragged2e} % for text justification
+\usepackage{enumerate}
+\usepackage{lipsum}
+\usepackage{scrextend}
+\usepackage{multicol}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{placeins}
+\usepackage{latexsym}
+\def\linefill{%
+\leavevmode
+\leaders\hrule\hskip\dimexpr\textwidth -\@\mbox{}}
+\usepackage{tikz} 
+\usepackage{enumitem}
+\usetikzlibrary{positioning}
+\usepackage{xcolor}
+\bibliography{BibliMSc}
+
+\newcommand{\celda}[1]{
+	\begin{minipage}{2cm}
+		\vspace{2mm}
+		#1
+		\vspace{2mm}
+	\end{minipage}
+}
+\definecolor{azul}{rgb}{0.36, 0.54, 0.66}
+\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00
+cm]{geometry}
+\author{ Kevin Arturo Amaya Osorio}
+
+\begin{document}
+
+	\begin{figure}[H]
+		\raggedright
+		\includegraphics[scale=0.7]{./escudo.png} \hfill
+	\end{figure}
+	
+	\vspace{1mm}
+	\begin{center}
+		{\Large \textbf{Proyecto criptografía}}
+		\vspace{0.5mm}  \\
+		{\large \textbf{Primer Avance}}\\
+		\vspace{0.5mm}  
+		\vspace{2mm}
+		{\textbf{Análisis Comparativo de Algoritmos de Criptografía Ligera}}\\
+		\vspace{0.5mm}  
+		\vspace{2mm}
+		{Kevin Arturo Amaya Osorio}\\
+		\vspace{2mm}
+	\end{center}
+
+\section{Resumen}
+
+
+
+
+\printbibliography
+
+\end{document}
