@@ -31,8 +31,8 @@ class EntornoRestringido:
 
     def __enter__(self):
         print(f"\n{'='*80}")
-        print(f"Simulating: {self.nombre}")
-        print(f"CPU Limit: {self.porcentaje_cpu}% | Memory Limit: {self.limite_memoria_mb}MB")
+        print(f"Simulando: {self.nombre}")
+        print(f"Límite CPU: {self.porcentaje_cpu}% | Límite Memoria: {self.limite_memoria_mb}MB")
         print(f"{'='*80}")
 
         # Establecer afinidad de CPU a un solo núcleo para consistencia
@@ -40,13 +40,13 @@ class EntornoRestringido:
             p = psutil.Process(self.pid)
             p.cpu_affinity([0])  # Usar solo el primer núcleo de CPU
         except (AttributeError, PermissionError):
-            print("Warning: Could not set CPU affinity")
+            print("Advertencia: No se pudo establecer afinidad de CPU")
 
         # Establecer prioridad del proceso para simular CPU más lenta
         try:
             os.nice(10)  # Prioridad más baja (valor nice más alto = prioridad más baja)
         except PermissionError:
-            print("Warning: Could not set process priority")
+            print("Advertencia: No se pudo establecer prioridad del proceso")
 
         return self
 
@@ -64,25 +64,25 @@ def obtener_perfiles_dispositivo():
         "high_end_pc": {
             "porcentaje_cpu": 100,
             "limite_memoria_mb": 2048,
-            "descripcion": "High-end PC / Server (baseline)",
+            "descripcion": "PC de gama alta / Servidor (línea base)",
             "ejemplos": "Desktop, Server, Raspberry Pi 4"
         },
         "mid_range_iot": {
             "porcentaje_cpu": 50,
             "limite_memoria_mb": 256,
-            "descripcion": "Mid-range IoT Device",
+            "descripcion": "Dispositivo IoT de gama media",
             "ejemplos": "ESP32, Arduino Due, STM32F4"
         },
         "low_end_iot": {
             "porcentaje_cpu": 25,
             "limite_memoria_mb": 64,
-            "descripcion": "Low-end IoT Device",
+            "descripcion": "Dispositivo IoT de gama baja",
             "ejemplos": "ESP8266, Arduino Uno, ATmega328"
         },
         "ultra_constrained": {
             "porcentaje_cpu": 10,
             "limite_memoria_mb": 16,
-            "descripcion": "Ultra-constrained Device",
+            "descripcion": "Dispositivo ultra restringido",
             "ejemplos": "Sensor nodes, RFID tags, MSP430"
         }
     }
@@ -145,12 +145,12 @@ def ejecutar_pruebas_restringidas():
     """Ejecutar pruebas simulando diferentes clases de dispositivos"""
 
     print("="*80)
-    print("RESOURCE-CONSTRAINED DEVICE SIMULATION BENCHMARK")
-    print("Testing DES, AES-128, and PRESENT-80 on simulated IoT devices")
+    print("BENCHMARK DE SIMULACIÓN DE DISPOSITIVOS CON RECURSOS LIMITADOS")
+    print("Probando DES y AES-128 en dispositivos IoT simulados")
     print("="*80)
 
     # Cargar mensajes de prueba
-    print("\nLoading test messages...")
+    print("\nCargando mensajes de prueba...")
     mensajes_prueba = {}
 
     try:
@@ -161,7 +161,7 @@ def ejecutar_pruebas_restringidas():
         with open("../data/long_message.txt", "r", encoding="utf-8") as f:
             mensajes_prueba["long"] = f.read()
     except FileNotFoundError:
-        print("Error: Test message files not found!")
+        print("Error: ¡Archivos de mensajes de prueba no encontrados!")
         return
 
     # Definir algoritmos
@@ -188,19 +188,19 @@ def ejecutar_pruebas_restringidas():
 
     # Imprimir perfiles de dispositivos
     print("\n" + "="*80)
-    print("DEVICE PROFILES")
+    print("PERFILES DE DISPOSITIVOS")
     print("="*80)
     for nombre_perfil, perfil in perfiles.items():
         print(f"\n{perfil['descripcion']}:")
         print(f"  CPU: {perfil['porcentaje_cpu']}% | RAM: {perfil['limite_memoria_mb']}MB")
-        print(f"  Examples: {perfil['ejemplos']}")
+        print(f"  Ejemplos: {perfil['ejemplos']}")
 
     # Ejecutar pruebas
     todos_resultados = []
 
     for tipo_mensaje, mensaje in mensajes_prueba.items():
         print(f"\n\n{'='*80}")
-        print(f"Testing {tipo_mensaje.upper()} message ({len(mensaje)} bytes)")
+        print(f"Probando mensaje {tipo_mensaje.upper()} ({len(mensaje)} bytes)")
         print(f"{'='*80}")
 
         for nombre_perfil, perfil in perfiles.items():
@@ -237,7 +237,7 @@ def imprimir_reporte_resumen(resultados, perfiles):
     """Imprimir reporte de comparación resumido"""
 
     print("\n\n" + "="*80)
-    print("SUMMARY: PERFORMANCE ACROSS DEVICE CLASSES")
+    print("RESUMEN: RENDIMIENTO EN CLASES DE DISPOSITIVOS")
     print("="*80)
 
     # Agrupar por perfil y algoritmo
@@ -250,10 +250,10 @@ def imprimir_reporte_resumen(resultados, perfiles):
 
         print(f"\n{descripcion_perfil}")
         print("-" * 80)
-        print(f"{'Algorithm':<15} {'Avg Enc':<18} {'Avg Dec':<18} "
-              f"{'Avg Throughput':<20}")
+        print(f"{'Algoritmo':<15} {'Prom. Cifr.':<18} {'Prom. Desc.':<18} "
+              f"{'Prom. Rendimiento':<20}")
         print(f"{'':<15} {'CIFRADO (ms)':<18} {'DESCIFRADO (ms)':<18} "
-              f"{'(Enc, KB/s)':<20}")
+              f"{'(Cifr, KB/s)':<20}")
         print("-" * 80)
 
         # Calcular promedios por algoritmo
@@ -270,7 +270,7 @@ def imprimir_reporte_resumen(resultados, perfiles):
 
     # Mejor algoritmo por perfil
     print("\n\n" + "="*80)
-    print("RECOMMENDATIONS BY DEVICE CLASS")
+    print("RECOMENDACIONES POR CLASE DE DISPOSITIVO")
     print("="*80)
 
     for nombre_perfil, perfil in perfiles.items():
@@ -284,20 +284,20 @@ def imprimir_reporte_resumen(resultados, perfiles):
         mejor = min(resultados_perfil, key=lambda x: x["tiempo_cifrado_ms"])
 
         print(f"\n{descripcion_perfil}:")
-        print(f"  Best Algorithm: {mejor['algoritmo']}")
-        print(f"  Encryption Time (CIFRADO): {mejor['tiempo_cifrado_ms']:.2f}ms")
-        print(f"  Decryption Time (DESCIFRADO): {mejor['tiempo_descifrado_ms']:.2f}ms")
-        print(f"  Throughput (Encryption): {mejor['rendimiento_kbps']:.2f}KB/s")
+        print(f"  Mejor Algoritmo: {mejor['algoritmo']}")
+        print(f"  Tiempo de Cifrado: {mejor['tiempo_cifrado_ms']:.2f}ms")
+        print(f"  Tiempo de Descifrado: {mejor['tiempo_descifrado_ms']:.2f}ms")
+        print(f"  Rendimiento (Cifrado): {mejor['rendimiento_kbps']:.2f}KB/s")
 
 
 if __name__ == "__main__":
-    print("\nNOTE: This simulation uses software-based resource limiting.")
-    print("Results are approximations of constrained hardware behavior.")
-    print("For accurate IoT device testing, use actual hardware or emulators.")
+    print("\nNOTA: Esta simulación usa limitación de recursos basada en software.")
+    print("Los resultados son aproximaciones del comportamiento de hardware restringido.")
+    print("Para pruebas precisas en dispositivos IoT, use hardware real o emuladores.")
     print()
 
     resultados = ejecutar_pruebas_restringidas()
 
     print("\n" + "="*80)
-    print("CONSTRAINED BENCHMARK COMPLETE")
+    print("BENCHMARK RESTRINGIDO COMPLETADO")
     print("="*80)

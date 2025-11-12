@@ -172,7 +172,7 @@ def probar_aes(texto_plano, tipo_mensaje):
 def imprimir_tabla_comparacion(resultados):
     """Imprimir tabla de comparación formateada"""
     print("\n" + "=" * 100)
-    print("LIGHTWEIGHT CRYPTOGRAPHY PERFORMANCE COMPARISON")
+    print("COMPARACIÓN DE RENDIMIENTO DE CRIPTOGRAFÍA LIGERA")
     print("=" * 100)
 
     # Agrupar por tipo de mensaje
@@ -184,19 +184,19 @@ def imprimir_tabla_comparacion(resultados):
 
     for tipo_mensaje, resultados_mensaje in tipos_mensaje.items():
         print(f"\n{'=' * 100}")
-        print(f"MESSAGE TYPE: {tipo_mensaje.upper()}")
-        print(f"Size: {resultados_mensaje[0].tamano_texto_plano} bytes")
+        print(f"TIPO DE MENSAJE: {tipo_mensaje.upper()}")
+        print(f"Tamaño: {resultados_mensaje[0].tamano_texto_plano} bytes")
         print(f"{'=' * 100}")
 
         # Encabezado
         print(
-            f"\n{'Algorithm':<15} {'Enc Time':<15} {'Dec Time':<15} "
-            f"{'Throughput':<15} {'Cycles/Byte':<15} {'Memory':<12} "
-            f"{'Overhead':<10}"
+            f"\n{'Algoritmo':<15} {'Tiempo Cifr.':<15} {'Tiempo Desc.':<15} "
+            f"{'Rendimiento':<15} {'Ciclos/Byte':<15} {'Memoria':<12} "
+            f"{'Sobrecarga':<10}"
         )
         print(
             f"{'':<15} {'CIFRADO (ms)':<15} {'DESCIFRADO (ms)':<15} "
-            f"{'(Enc, MB/s)':<15} {'(Enc, est.)':<15} {'(KB)':<12} "
+            f"{'(Cifr, MB/s)':<15} {'(Cifr, est.)':<15} {'(KB)':<12} "
             f"{'(%)':<10}"
         )
         print("-" * 100)
@@ -221,21 +221,21 @@ def imprimir_tabla_comparacion(resultados):
             resultados_mensaje, key=lambda x: x.rendimiento_mbps)
         mejor_memoria = min(resultados_mensaje, key=lambda x: x.memoria_usada)
 
-        print(f"\n{'Best Encryption Speed (CIFRADO):':<35} {
+        print(f"\n{'Mejor Velocidad de Cifrado:':<35} {
               mejor_cifrado.algoritmo}")
         print(
-            f"{'Best Decryption Speed (DESCIFRADO):':<35} {
+            f"{'Mejor Velocidad de Descifrado:':<35} {
                 mejor_descifrado.algoritmo}"
         )
-        print(f"{'Best Throughput (Encryption):':<35} {
+        print(f"{'Mejor Rendimiento (Cifrado):':<35} {
               mejor_rendimiento.algoritmo}")
-        print(f"{'Lowest Memory Usage:':<35} {mejor_memoria.algoritmo}")
+        print(f"{'Menor Uso de Memoria:':<35} {mejor_memoria.algoritmo}")
 
 
 def imprimir_resultados_detallados(resultados):
     """Imprimir resultados detallados para cada prueba"""
     print("\n\n" + "=" * 100)
-    print("DETAILED BENCHMARK RESULTS")
+    print("RESULTADOS DETALLADOS DEL BENCHMARK")
     print("=" * 100)
 
     for resultado in resultados:
@@ -245,7 +245,7 @@ def imprimir_resultados_detallados(resultados):
 def generar_graficos(resultados):
     """Generar gráficos de comparación de resultados de prueba"""
     print("\n\n" + "=" * 100)
-    print("GENERATING COMPARISON CHARTS")
+    print("GENERANDO GRÁFICOS DE COMPARACIÓN")
     print("=" * 100)
 
     # Organizar datos por tipo de mensaje y algoritmo
@@ -543,7 +543,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Encryption time chart saved to: results/chart_encryption_time.png")
+    print(f"[OK] Gráfico de tiempo de cifrado guardado en: results/chart_encryption_time.png")
 
     # Gráfico Individual 2: Rendimiento
     fig2, ax = plt.subplots(figsize=(12, 6))
@@ -573,7 +573,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Throughput chart saved to: results/chart_throughput.png")
+    print(f"[OK] Gráfico de rendimiento guardado en: results/chart_throughput.png")
 
     # Gráfico Individual 3: Escalabilidad
     fig3, ax = plt.subplots(figsize=(12, 6))
@@ -604,7 +604,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Scalability chart saved to: results/chart_scalability.png")
+    print(f"[OK] Gráfico de escalabilidad guardado en: results/chart_scalability.png")
 
     # Gráfico Individual 3b: Escalabilidad Descifrado
     fig3b, ax = plt.subplots(figsize=(12, 6))
@@ -635,7 +635,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Scalability decryption chart saved to: results/chart_scalability_decryption.png")
+    print(f"[OK] Gráfico de escalabilidad de descifrado guardado en: results/chart_scalability_decryption.png")
 
     # Gráfico Individual 4: Uso de Memoria
     fig4, ax = plt.subplots(figsize=(12, 6))
@@ -665,7 +665,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Memory usage chart saved to: results/chart_memory_usage.png")
+    print(f"[OK] Gráfico de uso de memoria guardado en: results/chart_memory_usage.png")
 
     # 5. Gráfico de Consumo de Energía
     fig, ax = plt.subplots(figsize=(12, 7))
@@ -700,7 +700,7 @@ def generar_graficos(resultados):
         bbox_inches="tight",
     )
     print(
-        f"[OK] Energy consumption chart saved to: results/chart_energy_consumption.png"
+        f"[OK] Gráfico de consumo de energía guardado en: results/chart_energy_consumption.png"
     )
 
     # 6. Gráfico Individual: Tiempo de Descifrado
@@ -733,7 +733,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Decryption time chart saved to: results/chart_decryption_time.png")
+    print(f"[OK] Gráfico de tiempo de descifrado guardado en: results/chart_decryption_time.png")
 
     # 7. Gráfico Individual: Ciclos por Byte
     fig7, ax = plt.subplots(figsize=(12, 6))
@@ -765,7 +765,7 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] CPU cycles chart saved to: results/chart_cpu_cycles.png")
+    print(f"[OK] Gráfico de ciclos de CPU guardado en: results/chart_cpu_cycles.png")
 
     # 8. Gráfico Individual: Comparación General de Rendimiento
     fig8, ax = plt.subplots(figsize=(12, 6))
@@ -831,15 +831,15 @@ def generar_graficos(resultados):
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"[OK] Overall performance chart saved to: results/chart_overall_performance.png")
+    print(f"[OK] Gráfico de rendimiento general guardado en: results/chart_overall_performance.png")
 
     plt.close("all")
-    print("\n[OK] All charts generated successfully!")
+    print("\n[OK] Todos los gráficos generados exitosamente!")
 
 
 def ejecutar_pruebas():
     """Ejecutar todas las pruebas de rendimiento"""
-    print("Loading test messages...")
+    print("Cargando mensajes de prueba...")
 
     # Cargar mensajes de prueba
     with open(
@@ -880,8 +880,8 @@ def ejecutar_pruebas():
 
     for tipo_mensaje, mensaje in casos_prueba:
         print(f"\n{'=' * 80}")
-        print(f"Benchmarking {tipo_mensaje.upper()
-                              } message ({len(mensaje)} bytes)...")
+        print(f"Probando mensaje {tipo_mensaje.upper()
+                              } ({len(mensaje)} bytes)...")
         print(f"{'=' * 80}")
 
         textos_cifrados[tipo_mensaje] = {}
@@ -889,26 +889,26 @@ def ejecutar_pruebas():
         # Ejecución de calentamiento
         _ = DES_cifrar(mensaje[:64], "secret12")
 
-        print(f"\n[1/3] Testing DES...")
+        print(f"\n[1/2] Probando DES...")
         resultado_des, tc_des = probar_des(mensaje, tipo_mensaje)
         resultados.append(resultado_des)
         textos_cifrados[tipo_mensaje]["DES"] = tc_des
-        print(f"[OK] DES completed: {
+        print(f"[OK] DES completado: {
               resultado_des.tiempo_cifrado * 1000:.2f} ms")
 
-        print(f"[2/3] Testing AES-128...")
+        print(f"[2/2] Probando AES-128...")
         resultado_aes, tc_aes = probar_aes(mensaje, tipo_mensaje)
         resultados.append(resultado_aes)
         textos_cifrados[tipo_mensaje]["AES-128"] = tc_aes
         print(
-            f"[OK] AES-128 completed: {resultado_aes.tiempo_cifrado * 1000:.2f} ms")
+            f"[OK] AES-128 completado: {resultado_aes.tiempo_cifrado * 1000:.2f} ms")
 
     # Imprimir tabla de comparación
     imprimir_tabla_comparacion(resultados)
 
     # Imprimir textos cifrados de muestra
     print("\n\n" + "=" * 100)
-    print("SAMPLE CIPHERTEXTS (first 64 hex characters)")
+    print("MUESTRAS DE TEXTOS CIFRADOS (primeros 64 caracteres hexadecimales)")
     print("=" * 100)
     for tipo_mensaje, algoritmos in textos_cifrados.items():
         print(f"\n{tipo_mensaje.upper()}:")
@@ -923,18 +923,18 @@ def ejecutar_pruebas():
 
     # Imprimir resumen
     print("\n\n" + "=" * 100)
-    print("OVERALL SUMMARY")
+    print("RESUMEN GENERAL")
     print("=" * 100)
     print("""
-Key Findings:
-1. AES-128: Generally fastest for larger messages due to mature optimization
-2. DES: Legacy algorithm, moderate performance, 64-bit block size limitation
+Hallazgos Clave:
+1. AES-128: Generalmente más rápido para mensajes grandes debido a optimizaciones maduras
+2. DES: Algoritmo heredado, rendimiento moderado, limitación de bloque de 64 bits
 
-Important Notes:
-- These are SOFTWARE implementations on a general-purpose CPU
-- Hardware implementations would show very different results
-- Memory usage includes Python interpreter overhead
-- Cycles per byte are estimated based on wall-clock time
+Notas Importantes:
+- Estas son implementaciones de SOFTWARE en una CPU de propósito general
+- Las implementaciones de hardware mostrarían resultados muy diferentes
+- El uso de memoria incluye la sobrecarga del intérprete de Python
+- Los ciclos por byte son estimados basados en tiempo de reloj
     """)
 
     return resultados
@@ -942,15 +942,15 @@ Important Notes:
 
 if __name__ == "__main__":
     print("=" * 100)
-    print("LIGHTWEIGHT CRYPTOGRAPHY BENCHMARK SUITE")
-    print("Comparing DES vs AES-128")
+    print("SUITE DE BENCHMARKS DE CRIPTOGRAFÍA LIGERA")
+    print("Comparando DES vs AES-128")
     print("=" * 100)
-    print(f"\nPython version: {sys.version}")
-    print(f"Platform: {sys.platform}")
-    print("\nStarting benchmarks...\n")
+    print(f"\nVersión de Python: {sys.version}")
+    print(f"Plataforma: {sys.platform}")
+    print("\nIniciando benchmarks...\n")
 
     ejecutar_pruebas()
 
     print("\n" + "=" * 100)
-    print("BENCHMARK COMPLETE")
+    print("BENCHMARK COMPLETADO")
     print("=" * 100)
