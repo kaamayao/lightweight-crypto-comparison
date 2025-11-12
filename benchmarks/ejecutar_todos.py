@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 Script maestro para ejecutar todos los benchmarks
-Ejecuta secuencialmente:
+Ejecuta benchmarks con diferentes perfiles de recursos:
 1. Benchmark estándar (PC sin restricciones)
-2. Benchmark con restricciones (simulación ESP32, Arduino, etc.)
+2. Benchmark con restricciones (simulación ESP32, Arduino, sensores, etc.)
 """
 
 import os
@@ -27,73 +27,39 @@ def imprimir_banner(titulo):
     print("=" * ancho + "\n")
 
 
-def ejecutar_benchmark_estandar():
-    """Ejecutar benchmark estándar (PC sin restricciones)"""
-    imprimir_banner("BENCHMARK 1/2: RENDIMIENTO ESTÁNDAR (PC)")
-    print("Hardware: PC/Servidor sin restricciones")
-    print("Propósito: Medir rendimiento máximo de los algoritmos\n")
-
-    tiempo_inicio = time.time()
-
-    try:
-        from benchmarks.benchmark import ejecutar_pruebas
-        resultados = ejecutar_pruebas(perfiles=None, generar_graficos_flag=True)
-        tiempo_transcurrido = time.time() - tiempo_inicio
-
-        print(f"\n[OK] Benchmark estándar completado en {tiempo_transcurrido:.2f} segundos")
-        return resultados
-    except Exception as e:
-        print(f"\n[ERROR] Error en benchmark estándar: {e}")
-        import traceback
-        traceback.print_exc()
-        return None
-
-
-def ejecutar_benchmark_restringido():
-    """Ejecutar benchmark con restricciones (ESP32, Arduino, etc.)"""
-    imprimir_banner("BENCHMARK 2/2: DISPOSITIVOS CON RESTRICCIONES (IoT)")
-    print("Hardware: Simulación de ESP32, ESP8266, Arduino, sensores")
-    print("Propósito: Evaluar rendimiento en dispositivos con recursos limitados\n")
-
-    tiempo_inicio = time.time()
-
-    try:
-        from benchmarks.benchmark import ejecutar_pruebas
-        # Ejecutar con todos los perfiles restringidos
-        perfiles = ["high_end_pc", "mid_range_iot", "low_end_iot", "ultra_constrained"]
-        resultados = ejecutar_pruebas(perfiles=perfiles, generar_graficos_flag=True)
-        tiempo_transcurrido = time.time() - tiempo_inicio
-
-        print(f"\n[OK] Benchmark restringido completado en {tiempo_transcurrido:.2f} segundos")
-        return resultados
-    except Exception as e:
-        print(f"\n[ERROR] Error en benchmark restringido: {e}")
-        import traceback
-        traceback.print_exc()
-        return None
-
-
-def imprimir_resumen_final(resultados):
+def imprimir_resumen_final(resultados_estandar, resultados_restringidos, tiempo_total):
     """Imprimir un resumen final de todos los benchmarks"""
     imprimir_banner("RESUMEN FINAL - TODOS LOS BENCHMARKS")
 
     print("RESULTADOS GENERALES:\n")
 
-    print("1. BENCHMARK ESTÁNDAR (PC):")
-    if resultados['estandar']:
-        num_perfiles = len(resultados['estandar'])
+    # Benchmark estándar
+    print("1. BENCHMARK ESTÁNDAR (PC SIN RESTRICCIONES):")
+    if resultados_estandar:
+        num_perfiles = len(resultados_estandar)
+        total_pruebas = sum(len(r["resultados"]) for r in resultados_estandar.values())
         print(f"   - Perfiles ejecutados: {num_perfiles}")
-        print("   - Gráficos generados en: results/benchmark_charts_*.png")
-        print("   - Algoritmos probados: DES, AES-128")
+        print(f"   - Total de pruebas: {total_pruebas}")
+        print("   - Gráficos: results/benchmark_charts_sin_restricciones.png")
         print("   [OK] Completado exitosamente")
     else:
         print("   [ERROR] No completado")
 
-    print("\n2. BENCHMARK RESTRINGIDO (IoT):")
-    if resultados['restringido']:
-        num_perfiles = len(resultados['restringido'])
-        print(f"   - Perfiles simulados: {num_perfiles} (PC gama alta, ESP32, ESP8266, sensores)")
-        print("   - Gráficos generados en: results/benchmark_charts_*.png")
+    # Benchmark restringido
+    print("\n2. BENCHMARK RESTRINGIDO (DISPOSITIVOS IoT):")
+    if resultados_restringidos:
+        num_perfiles = len(resultados_restringidos)
+        total_pruebas = sum(len(r["resultados"]) for r in resultados_restringidos.values())
+        print(f"   - Perfiles simulados: {num_perfiles}")
+
+        # Listar perfiles ejecutados
+        perfiles_nombres = [r["config"]["descripcion"] for r in resultados_restringidos.values()]
+        print("   - Dispositivos:")
+        for nombre in perfiles_nombres:
+            print(f"     * {nombre}")
+
+        print(f"   - Total de pruebas: {total_pruebas}")
+        print("   - Gráficos: results/benchmark_charts_*.png (uno por perfil)")
         print("   [OK] Completado exitosamente")
     else:
         print("   [ERROR] No completado")
@@ -103,29 +69,31 @@ def imprimir_resumen_final(resultados):
     print("=" * 100)
 
     # Contar éxitos
-    exitosos = sum(1 for r in resultados.values() if r is not None)
-    total = len(resultados)
+    exitosos = sum([
+        1 if resultados_estandar else 0,
+        1 if resultados_restringidos else 0
+    ])
+    total = 2
 
     print(f"\nESTADO FINAL: {exitosos}/{total} benchmarks completados exitosamente")
+    print(f"TIEMPO TOTAL: {tiempo_total:.2f} segundos ({tiempo_total/60:.2f} minutos)")
 
     if exitosos == total:
-        print("[OK] TODOS LOS BENCHMARKS COMPLETADOS!")
+        print("\n[OK] TODOS LOS BENCHMARKS COMPLETADOS!")
     else:
-        print("[WARNING] Algunos benchmarks fallaron. Revisa los errores arriba.")
+        print("\n[WARNING] Algunos benchmarks fallaron. Revisa los errores arriba.")
 
 
-def generar_pdf_si_se_desea(resultados):
+def generar_pdf_si_se_desea():
     """Preguntar al usuario si desea generar reporte PDF"""
     print("\n" + "=" * 100)
     print("GENERACIÓN DE REPORTE PDF")
     print("=" * 100)
-    print("\n¿Deseas generar un reporte PDF completo con todos los resultados?")
+    print("\n¿Deseas generar un reporte PDF completo con todos los gráficos?")
     print("El reporte incluirá:")
-    print("  - Resumen ejecutivo")
-    print("  - Tablas de resultados de todos los benchmarks")
-    print("  - Todos los gráficos generados")
-    print("  - Recomendaciones por caso de uso")
-    print("  - Conclusiones técnicas")
+    print("  - Todos los gráficos generados durante los benchmarks")
+    print("  - Un gráfico por página para fácil visualización")
+    print("  - Formato PDF listo para presentaciones")
 
     respuesta = input("\nGenerar PDF? (s/n): ").strip().lower()
 
@@ -133,7 +101,6 @@ def generar_pdf_si_se_desea(resultados):
         print("\nGenerando reporte PDF...")
 
         try:
-            # Importar y ejecutar directamente (ya no necesita venv separado)
             from benchmarks.generar_pdf_graficos import generar_pdf_graficos
 
             ruta_pdf = generar_pdf_graficos()
@@ -168,36 +135,64 @@ def main():
     print("=" * 100)
     print("=" * 100)
 
-    print("\nSe ejecutarán 2 benchmarks:")
+    print("\nSe ejecutarán 2 tipos de benchmarks:")
     print("   1. Rendimiento estándar (PC sin restricciones)")
-    print("   2. Dispositivos con restricciones (ESP32, Arduino, sensores)")
+    print("   2. Dispositivos con restricciones (4 perfiles IoT)")
+    print("\nPerfiles de dispositivos a simular:")
+    print("   - PC de gama alta / Servidor")
+    print("   - Dispositivo IoT gama media (ESP32, Arduino Due)")
+    print("   - Dispositivo IoT gama baja (ESP8266, Arduino Uno)")
+    print("   - Dispositivo ultra restringido (sensores, RFID)")
 
     input("\nPresiona ENTER para comenzar...")
 
-    # Ejecutar todos los benchmarks
-    resultados = {
-        'estandar': None,
-        'restringido': None
-    }
+    resultados_estandar = None
+    resultados_restringidos = None
 
-    # 1. Benchmark estándar
-    resultados['estandar'] = ejecutar_benchmark_estandar()
+    # Importar la función de benchmark
+    from benchmarks.benchmark import ejecutar_pruebas
 
-    # 2. Benchmark restringido
-    resultados['restringido'] = ejecutar_benchmark_restringido()
+    # 1. Benchmark estándar (sin restricciones)
+    imprimir_banner("BENCHMARK 1/2: RENDIMIENTO ESTÁNDAR (PC)")
+    print("Modo: PC/Servidor sin restricciones de recursos")
+    print("Propósito: Medir el rendimiento máximo de los algoritmos\n")
+
+    tiempo_inicio = time.time()
+    try:
+        resultados_estandar = ejecutar_pruebas(perfiles=None, generar_graficos_flag=True)
+        tiempo_transcurrido = time.time() - tiempo_inicio
+        print(f"\n[OK] Benchmark estándar completado en {tiempo_transcurrido:.2f} segundos")
+    except Exception as e:
+        print(f"\n[ERROR] Error en benchmark estándar: {e}")
+        import traceback
+        traceback.print_exc()
+
+    # 2. Benchmark restringido (4 perfiles IoT)
+    imprimir_banner("BENCHMARK 2/2: DISPOSITIVOS CON RESTRICCIONES (IoT)")
+    print("Modo: Simulación de 4 perfiles de dispositivos IoT")
+    print("Propósito: Evaluar rendimiento en hardware con recursos limitados\n")
+
+    tiempo_inicio = time.time()
+    try:
+        perfiles = ["high_end_pc", "mid_range_iot", "low_end_iot", "ultra_constrained"]
+        resultados_restringidos = ejecutar_pruebas(perfiles=perfiles, generar_graficos_flag=True)
+        tiempo_transcurrido = time.time() - tiempo_inicio
+        print(f"\n[OK] Benchmark restringido completado en {tiempo_transcurrido:.2f} segundos")
+    except Exception as e:
+        print(f"\n[ERROR] Error en benchmark restringido: {e}")
+        import traceback
+        traceback.print_exc()
 
     # Resumen final
     tiempo_total = time.time() - inicio_total
+    imprimir_resumen_final(resultados_estandar, resultados_restringidos, tiempo_total)
 
-    imprimir_resumen_final(resultados)
-
-    print(f"\nTIEMPO TOTAL DE EJECUCIÓN: {tiempo_total:.2f} segundos ({tiempo_total/60:.2f} minutos)")
     print("\n" + "=" * 100)
     print("SUITE DE BENCHMARKS FINALIZADA")
     print("=" * 100 + "\n")
 
     # Ofrecer generación de PDF
-    generar_pdf_si_se_desea(resultados)
+    generar_pdf_si_se_desea()
 
 
 if __name__ == "__main__":
