@@ -528,7 +528,7 @@ def generar_graficos(resultados, perfil_nombre="sin_restricciones"):
     ax3.legend()
     ax3.grid(axis="y", alpha=0.3)
 
-    # 4. Comparación de Uso de Memoria
+    # 4. Comparación de Uso de Memoria - CIFRADO
     ax4 = plt.subplot(3, 3, 4)
     for i, algo in enumerate(algoritmos):
         ax4.bar(
@@ -540,8 +540,8 @@ def generar_graficos(resultados, perfil_nombre="sin_restricciones"):
             alpha=0.8,
         )
     ax4.set_xlabel("Tipo de Mensaje", fontsize=10, fontweight="bold")
-    ax4.set_ylabel("Uso de Memoria (KB)", fontsize=10, fontweight="bold")
-    ax4.set_title("Comparación: Uso de Memoria",
+    ax4.set_ylabel("Uso de Memoria Cifrado (KB)", fontsize=10, fontweight="bold")
+    ax4.set_title("Comparación: Memoria CIFRADO",
                   fontsize=12, fontweight="bold")
     ax4.set_xticks(x + ancho / 2)
     ax4.set_xticklabels(etiquetas_mensaje, fontsize=8)
@@ -670,6 +670,26 @@ def generar_graficos(resultados, perfil_nombre="sin_restricciones"):
     ax8.set_xticklabels(categorias, fontsize=8, rotation=15)
     ax8.legend()
     ax8.grid(axis="y", alpha=0.3)
+
+    # 9. Comparación de Uso de Memoria - DESCIFRADO
+    ax9 = plt.subplot(3, 3, 9)
+    for i, algo in enumerate(algoritmos):
+        ax9.bar(
+            x + i * ancho,
+            uso_memoria_descifrado[algo],
+            ancho,
+            label=algo,
+            color=colores[algo],
+            alpha=0.8,
+        )
+    ax9.set_xlabel("Tipo de Mensaje", fontsize=10, fontweight="bold")
+    ax9.set_ylabel("Uso de Memoria Descifrado (KB)", fontsize=10, fontweight="bold")
+    ax9.set_title("Comparación: Memoria DESCIFRADO",
+                  fontsize=12, fontweight="bold")
+    ax9.set_xticks(x + ancho / 2)
+    ax9.set_xticklabels(etiquetas_mensaje, fontsize=8)
+    ax9.legend()
+    ax9.grid(axis="y", alpha=0.3)
 
     plt.suptitle(
         f"Análisis de Rendimiento: Criptografía Ligera\nDES vs AES-128\nPerfil: {
