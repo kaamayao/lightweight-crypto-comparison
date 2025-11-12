@@ -1,0 +1,14 @@
+# Lightweight Crypto Comparison - Python Dependencies
+# Compatible with Python 3.9.6+
+
+# Data visualization
+matplotlib>=3.3.0
+
+# Image processing for PDF generation
+Pillow>=8.0.0
+
+# System and process monitoring
+psutil>=5.8.0
+
+# Data processing
+numpy>=1.19.0

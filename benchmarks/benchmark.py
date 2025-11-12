@@ -108,11 +108,9 @@ class EntornoRestringido:
 
         print(f"\n{'=' * 80}")
         print(f"Simulando: {self.perfil['descripcion']}")
-        print(
-            f"Límite CPU: {self.perfil['porcentaje_cpu']}% | Límite Memoria: {
-                self.perfil['limite_memoria_mb']
-            }MB"
-        )
+        limite_cpu = self.perfil['porcentaje_cpu']
+        limite_mem = self.perfil['limite_memoria_mb']
+        print(f"Límite CPU: {limite_cpu}% | Límite Memoria: {limite_mem}MB")
         print(f"{'=' * 80}")
 
         # Establecer afinidad de CPU a un solo núcleo para consistencia
@@ -391,12 +389,9 @@ def imprimir_tabla_comparacion(resultados, perfil_actual=None):
         mejor_memoria_cifrado = min(resultados_mensaje, key=lambda x: x.memoria_cifrado)
         mejor_memoria_descifrado = min(resultados_mensaje, key=lambda x: x.memoria_descifrado)
 
-        print(f"\n{'Mejor Velocidad de Cifrado:':<35} {
-              mejor_cifrado.algoritmo}")
-        print(f"{'Mejor Velocidad de Descifrado:':<35} {
-              mejor_descifrado.algoritmo}")
-        print(f"{'Mejor Rendimiento (Cifrado):':<35} {
-              mejor_rendimiento.algoritmo}")
+        print(f"\n{'Mejor Velocidad de Cifrado:':<35} {mejor_cifrado.algoritmo}")
+        print(f"{'Mejor Velocidad de Descifrado:':<35} {mejor_descifrado.algoritmo}")
+        print(f"{'Mejor Rendimiento (Cifrado):':<35} {mejor_rendimiento.algoritmo}")
         print(f"{'Menor Uso Memoria (Cifrado):':<35} {mejor_memoria_cifrado.algoritmo}")
         print(f"{'Menor Uso Memoria (Descifrado):':<35} {mejor_memoria_descifrado.algoritmo}")
 
@@ -691,10 +686,9 @@ def generar_graficos(resultados, perfil_nombre="sin_restricciones"):
     ax9.legend()
     ax9.grid(axis="y", alpha=0.3)
 
+    titulo = f"Análisis de Rendimiento: Criptografía Ligera\nDES vs AES-128\nPerfil: {perfil_nombre}"
     plt.suptitle(
-        f"Análisis de Rendimiento: Criptografía Ligera\nDES vs AES-128\nPerfil: {
-            perfil_nombre
-        }",
+        titulo,
         fontsize=16,
         fontweight="bold",
         y=0.995,
@@ -1130,21 +1124,15 @@ def ejecutar_pruebas(perfiles=None, generar_graficos_flag=True):
             if nombre_perfil in todos_perfiles:
                 perfiles_a_ejecutar[nombre_perfil] = todos_perfiles[nombre_perfil]
             else:
-                print(
-                    f"Advertencia: Perfil '{
-                        nombre_perfil}' no encontrado, se omitirá"
-                )
+                print(f"Advertencia: Perfil '{nombre_perfil}' no encontrado, se omitirá")
 
     # Ejecutar pruebas para cada perfil
     todos_resultados = {}
 
     for nombre_perfil, config_perfil in perfiles_a_ejecutar.items():
         print("\n" + "=" * 100)
-        print(
-            f"EJECUTANDO BENCHMARK: {
-                config_perfil['descripcion'] if config_perfil else 'Sin restricciones'
-            }"
-        )
+        desc_perfil = config_perfil['descripcion'] if config_perfil else 'Sin restricciones'
+        print(f"EJECUTANDO BENCHMARK: {desc_perfil}")
         print("=" * 100)
 
         resultados_perfil = []
@@ -1152,8 +1140,8 @@ def ejecutar_pruebas(perfiles=None, generar_graficos_flag=True):
 
         for tipo_mensaje, mensaje in casos_prueba:
             print(f"\n{'=' * 80}")
-            print(f"Probando mensaje {
-                  tipo_mensaje.upper()} ({len(mensaje)} bytes)...")
+            tipo_msg_upper = tipo_mensaje.upper()
+            print(f"Probando mensaje {tipo_msg_upper} ({len(mensaje)} bytes)...")
             print(f"{'=' * 80}")
 
             textos_cifrados[tipo_mensaje] = {}
@@ -1166,18 +1154,16 @@ def ejecutar_pruebas(perfiles=None, generar_graficos_flag=True):
                 mensaje, tipo_mensaje, config_perfil)
             resultados_perfil.append(resultado_des)
             textos_cifrados[tipo_mensaje]["DES"] = tc_des
-            print(f"[OK] DES completado: {
-                  resultado_des.tiempo_cifrado * 1000:.2f} ms")
+            tiempo_des_ms = resultado_des.tiempo_cifrado * 1000
+            print(f"[OK] DES completado: {tiempo_des_ms:.2f} ms")
 
             print(f"[2/2] Probando AES-128...")
             resultado_aes, tc_aes = probar_aes(
                 mensaje, tipo_mensaje, config_perfil)
             resultados_perfil.append(resultado_aes)
             textos_cifrados[tipo_mensaje]["AES-128"] = tc_aes
-            print(
-                f"[OK] AES-128 completado: {
-                    resultado_aes.tiempo_cifrado * 1000:.2f} ms"
-            )
+            tiempo_aes_ms = resultado_aes.tiempo_cifrado * 1000
+            print(f"[OK] AES-128 completado: {tiempo_aes_ms:.2f} ms")
 
         # Guardar resultados de este perfil
         todos_resultados[nombre_perfil] = {
