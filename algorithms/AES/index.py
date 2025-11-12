@@ -3,10 +3,6 @@ from algorithms.utils.index import string_a_bytes
 
 
 def multiplicar_galois(a, b):
-    """
-    Multiplicación en el campo de Galois GF(2^8) usado en AES.
-    Multiplica dos bytes en GF(2^8) con el polinomio irreducible 0x1B.
-    """
     p = 0
     for _ in range(8):
         if b & 1:

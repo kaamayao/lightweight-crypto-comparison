@@ -35,6 +35,7 @@ def generar_pdf_graficos():
         "chart_scalability.png",
         "chart_scalability_decryption.png",
         "chart_memory_usage.png",
+        "chart_memory_decryption.png",
         "chart_energy_consumption.png",
         "chart_cpu_cycles.png",
         "chart_overall_performance.png",
