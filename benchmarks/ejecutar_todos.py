@@ -37,7 +37,7 @@ def ejecutar_benchmark_estandar():
 
     try:
         from benchmarks.benchmark import ejecutar_pruebas
-        resultados = ejecutar_pruebas()
+        resultados = ejecutar_pruebas(perfiles=None, generar_graficos_flag=True)
         tiempo_transcurrido = time.time() - tiempo_inicio
 
         print(f"\n[OK] Benchmark estándar completado en {tiempo_transcurrido:.2f} segundos")
@@ -58,8 +58,10 @@ def ejecutar_benchmark_restringido():
     tiempo_inicio = time.time()
 
     try:
-        from benchmarks.benchmark_constrained import ejecutar_pruebas_restringidas
-        resultados = ejecutar_pruebas_restringidas()
+        from benchmarks.benchmark import ejecutar_pruebas
+        # Ejecutar con todos los perfiles restringidos
+        perfiles = ["high_end_pc", "mid_range_iot", "low_end_iot", "ultra_constrained"]
+        resultados = ejecutar_pruebas(perfiles=perfiles, generar_graficos_flag=True)
         tiempo_transcurrido = time.time() - tiempo_inicio
 
         print(f"\n[OK] Benchmark restringido completado en {tiempo_transcurrido:.2f} segundos")
@@ -79,17 +81,19 @@ def imprimir_resumen_final(resultados):
 
     print("1. BENCHMARK ESTÁNDAR (PC):")
     if resultados['estandar']:
-        print(f"   - Total de pruebas: {len(resultados['estandar'])}")
-        print("   - Gráficos generados en: results/benchmark_charts.png")
-        print("   - Algoritmos probados: DES, AES-128, PRESENT-80")
+        num_perfiles = len(resultados['estandar'])
+        print(f"   - Perfiles ejecutados: {num_perfiles}")
+        print("   - Gráficos generados en: results/benchmark_charts_*.png")
+        print("   - Algoritmos probados: DES, AES-128")
         print("   [OK] Completado exitosamente")
     else:
         print("   [ERROR] No completado")
 
     print("\n2. BENCHMARK RESTRINGIDO (IoT):")
     if resultados['restringido']:
-        print(f"   - Total de pruebas: {len(resultados['restringido'])}")
-        print("   - Perfiles simulados: PC, ESP32, ESP8266, sensores ultra-ligeros")
+        num_perfiles = len(resultados['restringido'])
+        print(f"   - Perfiles simulados: {num_perfiles} (PC gama alta, ESP32, ESP8266, sensores)")
+        print("   - Gráficos generados en: results/benchmark_charts_*.png")
         print("   [OK] Completado exitosamente")
     else:
         print("   [ERROR] No completado")
