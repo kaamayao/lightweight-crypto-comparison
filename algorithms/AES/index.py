@@ -2,7 +2,11 @@ from .constants import SBOX, INV_SBOX, RCON
 from algorithms.utils.index import string_a_bytes
 
 
-def gmul(a, b):
+def multiplicar_galois(a, b):
+    """
+    Multiplicación en el campo de Galois GF(2^8) usado en AES.
+    Multiplica dos bytes en GF(2^8) con el polinomio irreducible 0x1B.
+    """
     p = 0
     for _ in range(8):
         if b & 1:
@@ -27,28 +31,28 @@ def mezclar_columnas_inverso(estado):
     resultado = [[0] * 4 for _ in range(4)]
     for i in range(4):
         resultado[0][i] = (
-            gmul(0x0E, estado[0][i])
-            ^ gmul(0x0B, estado[1][i])
-            ^ gmul(0x0D, estado[2][i])
-            ^ gmul(0x09, estado[3][i])
+            multiplicar_galois(0x0E, estado[0][i])
+            ^ multiplicar_galois(0x0B, estado[1][i])
+            ^ multiplicar_galois(0x0D, estado[2][i])
+            ^ multiplicar_galois(0x09, estado[3][i])
         )
         resultado[1][i] = (
-            gmul(0x09, estado[0][i])
-            ^ gmul(0x0E, estado[1][i])
-            ^ gmul(0x0B, estado[2][i])
-            ^ gmul(0x0D, estado[3][i])
+            multiplicar_galois(0x09, estado[0][i])
+            ^ multiplicar_galois(0x0E, estado[1][i])
+            ^ multiplicar_galois(0x0B, estado[2][i])
+            ^ multiplicar_galois(0x0D, estado[3][i])
         )
         resultado[2][i] = (
-            gmul(0x0D, estado[0][i])
-            ^ gmul(0x09, estado[1][i])
-            ^ gmul(0x0E, estado[2][i])
-            ^ gmul(0x0B, estado[3][i])
+            multiplicar_galois(0x0D, estado[0][i])
+            ^ multiplicar_galois(0x09, estado[1][i])
+            ^ multiplicar_galois(0x0E, estado[2][i])
+            ^ multiplicar_galois(0x0B, estado[3][i])
         )
         resultado[3][i] = (
-            gmul(0x0B, estado[0][i])
-            ^ gmul(0x0D, estado[1][i])
-            ^ gmul(0x09, estado[2][i])
-            ^ gmul(0x0E, estado[3][i])
+            multiplicar_galois(0x0B, estado[0][i])
+            ^ multiplicar_galois(0x0D, estado[1][i])
+            ^ multiplicar_galois(0x09, estado[2][i])
+            ^ multiplicar_galois(0x0E, estado[3][i])
         )
     return resultado
 
@@ -75,28 +79,28 @@ def mezclar_columnas(estado):
     resultado = [[0] * 4 for _ in range(4)]
     for i in range(4):
         resultado[0][i] = (
-            gmul(0x02, estado[0][i])
-            ^ gmul(0x03, estado[1][i])
+            multiplicar_galois(0x02, estado[0][i])
+            ^ multiplicar_galois(0x03, estado[1][i])
             ^ estado[2][i]
             ^ estado[3][i]
         )
         resultado[1][i] = (
             estado[0][i]
-            ^ gmul(0x02, estado[1][i])
-            ^ gmul(0x03, estado[2][i])
+            ^ multiplicar_galois(0x02, estado[1][i])
+            ^ multiplicar_galois(0x03, estado[2][i])
             ^ estado[3][i]
         )
         resultado[2][i] = (
             estado[0][i]
             ^ estado[1][i]
-            ^ gmul(0x02, estado[2][i])
-            ^ gmul(0x03, estado[3][i])
+            ^ multiplicar_galois(0x02, estado[2][i])
+            ^ multiplicar_galois(0x03, estado[3][i])
         )
         resultado[3][i] = (
-            gmul(0x03, estado[0][i])
+            multiplicar_galois(0x03, estado[0][i])
             ^ estado[1][i]
             ^ estado[2][i]
-            ^ gmul(0x02, estado[3][i])
+            ^ multiplicar_galois(0x02, estado[3][i])
         )
     return resultado
 
