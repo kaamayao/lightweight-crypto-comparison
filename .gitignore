@@ -33,3 +33,14 @@ docs/*.loa
 docs/*.lol
 docs/*.upa
 docs/*.upb
+
+# Benchmark results directory
+results/
+
+# Backup folder
+backup/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
