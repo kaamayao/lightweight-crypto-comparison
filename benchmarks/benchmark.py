@@ -121,15 +121,19 @@ class EntornoRestringido:
             p = psutil.Process(self.pid)
             self.original_affinity = p.cpu_affinity()
             p.cpu_affinity([0])  # Usar solo el primer núcleo de CPU
-        except (AttributeError, PermissionError):
-            print("Advertencia: No se pudo establecer afinidad de CPU")
+        except AttributeError:
+            # CPU affinity no disponible en macOS/BSD - esto es normal y esperado
+            pass
+        except PermissionError:
+            print("Advertencia: No se pudo establecer afinidad de CPU (permisos insuficientes)")
 
         # Establecer prioridad del proceso para simular CPU más lenta
         try:
             self.original_nice = os.nice(0)
             os.nice(10)  # Prioridad más baja
         except (PermissionError, OSError):
-            print("Advertencia: No se pudo establecer prioridad del proceso")
+            # En algunos sistemas (macOS con ciertas configuraciones) esto puede fallar
+            pass
 
         return self
 
