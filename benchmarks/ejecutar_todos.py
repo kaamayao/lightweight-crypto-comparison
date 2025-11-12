@@ -84,43 +84,34 @@ def imprimir_resumen_final(resultados_estandar, resultados_restringidos, tiempo_
         print("\n[WARNING] Algunos benchmarks fallaron. Revisa los errores arriba.")
 
 
-def generar_pdf_si_se_desea():
-    """Preguntar al usuario si desea generar reporte PDF"""
+def generar_pdf_reporte():
+    """Generar reporte PDF automáticamente con todos los gráficos"""
     print("\n" + "=" * 100)
     print("GENERACIÓN DE REPORTE PDF")
     print("=" * 100)
-    print("\n¿Deseas generar un reporte PDF completo con todos los gráficos?")
-    print("El reporte incluirá:")
-    print("  - Todos los gráficos generados durante los benchmarks")
-    print("  - Un gráfico por página para fácil visualización")
-    print("  - Formato PDF listo para presentaciones")
+    print("\nGenerando reporte PDF con todos los gráficos...")
 
-    respuesta = input("\nGenerar PDF? (s/n): ").strip().lower()
+    try:
+        from benchmarks.generar_pdf_graficos import generar_pdf_graficos
 
-    if respuesta in ['s', 'si', 'sí', 'yes', 'y']:
-        print("\nGenerando reporte PDF...")
+        ruta_pdf = generar_pdf_graficos()
 
-        try:
-            from benchmarks.generar_pdf_graficos import generar_pdf_graficos
+        if ruta_pdf:
+            print(f"\n[OK] Reporte PDF generado exitosamente: {ruta_pdf}")
+            print("     El reporte incluye todos los gráficos generados durante los benchmarks")
+            print("     Un gráfico por página para fácil visualización")
+        else:
+            print("\n[ERROR] Error al generar PDF")
 
-            ruta_pdf = generar_pdf_graficos()
-
-            if ruta_pdf:
-                print(f"\n[OK] Reporte PDF generado: {ruta_pdf}")
-            else:
-                print("\n[ERROR] Error al generar PDF")
-
-        except ImportError as e:
-            print(f"\n[ERROR] Error: Falta la biblioteca Pillow")
-            print("\nPara instalar Pillow:")
-            print("  pip install Pillow")
-            print(f"\nDetalle del error: {e}")
-        except Exception as e:
-            print(f"\n[ERROR] Error al generar PDF: {e}")
-            import traceback
-            traceback.print_exc()
-    else:
-        print("\nOmitiendo generación de PDF")
+    except ImportError as e:
+        print(f"\n[ERROR] Error: Falta la biblioteca Pillow")
+        print("\nPara instalar Pillow:")
+        print("  pip install Pillow")
+        print(f"\nDetalle del error: {e}")
+    except Exception as e:
+        print(f"\n[ERROR] Error al generar PDF: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 def main():
@@ -187,12 +178,12 @@ def main():
     tiempo_total = time.time() - inicio_total
     imprimir_resumen_final(resultados_estandar, resultados_restringidos, tiempo_total)
 
+    # Generar PDF automáticamente
+    generar_pdf_reporte()
+
     print("\n" + "=" * 100)
     print("SUITE DE BENCHMARKS FINALIZADA")
     print("=" * 100 + "\n")
-
-    # Ofrecer generación de PDF
-    generar_pdf_si_se_desea()
 
 
 if __name__ == "__main__":
