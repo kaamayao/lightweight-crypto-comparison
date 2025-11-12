@@ -242,7 +242,7 @@ def probar_des(texto_plano, tipo_mensaje, perfil=None):
         bits_texto_cifrado = DES_cifrar(texto_plano, clave)
         fin_cifrado = time.perf_counter()
 
-        actual, pico = tracemalloc.get_traced_memory()
+        _, pico = tracemalloc.get_traced_memory()
         tracemalloc.stop()
 
         resultado.tiempo_cifrado = fin_cifrado - inicio_cifrado
@@ -281,7 +281,7 @@ def probar_aes(texto_plano, tipo_mensaje, perfil=None):
         bytes_texto_cifrado = AES_cifrar(texto_plano, clave)
         fin_cifrado = time.perf_counter()
 
-        actual, pico = tracemalloc.get_traced_memory()
+        _, pico = tracemalloc.get_traced_memory()
         tracemalloc.stop()
 
         resultado.tiempo_cifrado = fin_cifrado - inicio_cifrado

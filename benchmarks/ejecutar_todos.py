@@ -134,8 +134,7 @@ def main():
     print("   - Dispositivo IoT gama media (ESP32, Arduino Due)")
     print("   - Dispositivo IoT gama baja (ESP8266, Arduino Uno)")
     print("   - Dispositivo ultra restringido (sensores, RFID)")
-
-    input("\nPresiona ENTER para comenzar...")
+    print()
 
     resultados_estandar = None
     resultados_restringidos = None
