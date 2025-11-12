@@ -1,0 +1,467 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{SurveyLCW}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=ddfec766b8ffd99b3e2e490792ef1473}{%
+           family={Soto\bibnamedelima Cruz},
+           familyi={S\bibinitperiod\bibinitdelim C\bibinitperiod},
+           given={Jesús},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d6cb7009046e5f3f4181af03258e7fd8}{%
+           family={Ruiz-Ibarra},
+           familyi={R\bibinithyphendelim I\bibinitperiod},
+           given={Erica},
+           giveni={E\bibinitperiod}}}%
+        {{hash=39d93e0d4a747bd06261afdbfdd7e262}{%
+           family={Castillo},
+           familyi={C\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6eb4dc87afc24ba28b0fc8faa5e2a715}{%
+           family={Espinoza-Ruiz},
+           familyi={E\bibinithyphendelim R\bibinitperiod},
+           given={Adolfo},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9e51a39f1e71188207f353191010e079}{%
+           family={Castillo\bibnamedelima Atoche},
+           familyi={C\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Alejandro},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bf3311d789519d84a3e8e62cf17cdf39}{%
+           family={Mass-Sanchez},
+           familyi={M\bibinithyphendelim S\bibinitperiod},
+           given={Joaquin},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{8c432352a29947ed417f7aac9d88f04a}
+      \strng{fullhash}{41ff6a18057d876e5733b6e8eda94d83}
+      \strng{fullhashraw}{41ff6a18057d876e5733b6e8eda94d83}
+      \strng{bibnamehash}{8c432352a29947ed417f7aac9d88f04a}
+      \strng{authorbibnamehash}{8c432352a29947ed417f7aac9d88f04a}
+      \strng{authornamehash}{8c432352a29947ed417f7aac9d88f04a}
+      \strng{authorfullhash}{41ff6a18057d876e5733b6e8eda94d83}
+      \strng{authorfullhashraw}{41ff6a18057d876e5733b6e8eda94d83}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Technologies}
+      \field{month}{12}
+      \field{title}{A Survey of Efficient Lightweight Cryptography for Power-Constrained Microcontrollers}
+      \field{volume}{13}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.3390/technologies13010003
+      \endverb
+    \endentry
+    \entry{PRESENT}{inproceedings}{}{}
+      \name{author}{8}{}{%
+        {{hash=4d1887ebcd8601a43ea578f11d788ca9}{%
+           family={Bogdanov},
+           familyi={B\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9256faf9cf476419a316012d8140a500}{%
+           family={Knudsen},
+           familyi={K\bibinitperiod},
+           given={L.\bibnamedelimi R.},
+           giveni={L\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=ae7ad0cac3a9ff0c77c6b2962aab1044}{%
+           family={Leander},
+           familyi={L\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=62f43f86f532fab54b3845cb24b70da3}{%
+           family={Paar},
+           familyi={P\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=829b551cc7b2cbb2a4216f306ece3290}{%
+           family={Poschmann},
+           familyi={P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=1d52eec0ffbfdccba7e4014552b66e67}{%
+           family={Robshaw},
+           familyi={R\bibinitperiod},
+           given={M.\bibnamedelimi J.\bibnamedelimi B.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=9e0f4606d743c06b1d265c867448a7eb}{%
+           family={Seurin},
+           familyi={S\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=cdb15326dd5e26e4cf1ae3c94fc94ff1}{%
+           family={Vikkelsoe},
+           familyi={V\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=c77e6f958b91a9ee6ddc9d92d55bbbbd}{%
+           family={Paillier},
+           familyi={P\bibinitperiod},
+           given={Pascal},
+           giveni={P\bibinitperiod}}}%
+        {{hash=bfe0a642d06f77a231ed11d0d3aa70c3}{%
+           family={Verbauwhede},
+           familyi={V\bibinitperiod},
+           given={Ingrid},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer Berlin Heidelberg}%
+      }
+      \strng{namehash}{999a5445b8c93a2c36493e228eaec9f8}
+      \strng{fullhash}{4031a791715b37591031690c8f1293b2}
+      \strng{fullhashraw}{4031a791715b37591031690c8f1293b2}
+      \strng{bibnamehash}{999a5445b8c93a2c36493e228eaec9f8}
+      \strng{authorbibnamehash}{999a5445b8c93a2c36493e228eaec9f8}
+      \strng{authornamehash}{999a5445b8c93a2c36493e228eaec9f8}
+      \strng{authorfullhash}{4031a791715b37591031690c8f1293b2}
+      \strng{authorfullhashraw}{4031a791715b37591031690c8f1293b2}
+      \strng{editorbibnamehash}{842079439474aef883f2ddd93ffebd5c}
+      \strng{editornamehash}{842079439474aef883f2ddd93ffebd5c}
+      \strng{editorfullhash}{842079439474aef883f2ddd93ffebd5c}
+      \strng{editorfullhashraw}{842079439474aef883f2ddd93ffebd5c}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{With the establishment of the AES the need for new block ciphers has been greatly diminished; for almost all block cipher applications the AES is an excellent and preferred choice. However, despite recent implementation advances, the AES is not suitable for extremely constrained environments such as RFID tags and sensor networks. In this paper we describe an ultra-lightweight block cipher, present. Both security and hardware efficiency have been equally important during the design of the cipher and at 1570 GE, the hardware requirements for present are competitive with today's leading compact stream ciphers.}
+      \field{booktitle}{Cryptographic Hardware and Embedded Systems - CHES 2007}
+      \field{isbn}{978-3-540-74735-2}
+      \field{title}{PRESENT: An Ultra-Lightweight Block Cipher}
+      \field{year}{2007}
+      \field{pages}{450\bibrangedash 466}
+      \range{pages}{17}
+    \endentry
+    \entry{BlockVsStream}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=6b9702c0a225b2966f2e07631bcfe935}{%
+           family={Biryukov},
+           familyi={B\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{fullhash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{fullhashraw}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{bibnamehash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{authorbibnamehash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{authornamehash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{authorfullhash}{6b9702c0a225b2966f2e07631bcfe935}
+      \strng{authorfullhashraw}{6b9702c0a225b2966f2e07631bcfe935}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{05}
+      \field{title}{Block Ciphers and Stream Ciphers: The State of the Art}
+      \field{year}{2004}
+    \endentry
+    \entry{DES}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{hash=7c41fe79c51ff005a486f4f5022a34ad}{%
+           family={Grabbe},
+           familyi={G\bibinitperiod},
+           given={Orlin},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{fullhash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{fullhashraw}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{bibnamehash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{authorbibnamehash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{authornamehash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{authorfullhash}{7c41fe79c51ff005a486f4f5022a34ad}
+      \strng{authorfullhashraw}{7c41fe79c51ff005a486f4f5022a34ad}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The DES Algorithm Illustrated}
+      \field{year}{2006}
+      \verb{urlraw}
+      \verb https://api.semanticscholar.org/CorpusID:63508688
+      \endverb
+      \verb{url}
+      \verb https://api.semanticscholar.org/CorpusID:63508688
+      \endverb
+    \endentry
+    \entry{DESChallenge}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=5de0e8bb280dfc0e37a1a8b405709442}{%
+           family={{Electronic Frontier Foundation (EFF)}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{fullhash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{fullhashraw}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{bibnamehash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{authorbibnamehash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{authornamehash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{authorfullhash}{5de0e8bb280dfc0e37a1a8b405709442}
+      \strng{authorfullhashraw}{5de0e8bb280dfc0e37a1a8b405709442}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{ https://w2.eff.org/Privacy/Crypto/Crypto_misc/DESCracker/HTML/19990119_deschallenge3.html }}
+      \field{month}{1}
+      \field{note}{Comunicado de prensa}
+      \field{title}{{EFF's DES Cracker and Distributed.Net Win DES Challenge III in 22 Hours and 15 Minutes}}
+      \field{urlday}{1}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{year}{1999}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{CryptoBookImpl}{book}{}{}
+      \name{author}{3}{}{%
+        {{hash=4bd07a7ac2197453f866bfc9e67dad78}{%
+           family={Menezes},
+           familyi={M\bibinitperiod},
+           given={A\bibnamedelima J},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=af7458ecf6c9cd2463b42eb4f58d1b1f}{%
+           family={C},
+           familyi={C\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=e0be458da3b0a0595629254377376159}{%
+           family={Vanstone},
+           familyi={V\bibinitperiod},
+           given={Scott\bibnamedelima A},
+           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Crc Press}%
+      }
+      \strng{namehash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{fullhash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{fullhashraw}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{bibnamehash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{authorbibnamehash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{authornamehash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{authorfullhash}{9dc7407da3d2b7bc683548714bcf6023}
+      \strng{authorfullhashraw}{9dc7407da3d2b7bc683548714bcf6023}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Handbook of applied cryptography}
+      \field{year}{2001}
+    \endentry
+    \entry{DESNSA}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=ef9cb61878e61d434507444346b29d1a}{%
+           family={{National Institute of Standards and Technology}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {U.S. Department of Commerce}%
+      }
+      \list{location}{1}{%
+        {Gaithersburg, MD}%
+      }
+      \strng{namehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{fullhash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{fullhashraw}{ef9cb61878e61d434507444346b29d1a}
+      \strng{bibnamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorbibnamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authornamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorfullhash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorfullhashraw}{ef9cb61878e61d434507444346b29d1a}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{10}
+      \field{note}{Supersedes FIPS PUB 46-2}
+      \field{number}{46-3}
+      \field{title}{Data Encryption Standard (DES)}
+      \field{type}{Federal Information Processing Standards Publication}
+      \field{year}{1999}
+      \verb{urlraw}
+      \verb https://csrc.nist.gov/pubs/fips/46-3/final
+      \endverb
+      \verb{url}
+      \verb https://csrc.nist.gov/pubs/fips/46-3/final
+      \endverb
+    \endentry
+    \entry{DaemenRijmen2002}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=ce9c20302c5a545e289c41661ac58c43}{%
+           family={Daemen},
+           familyi={D\bibinitperiod},
+           given={Joan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d2e51b6dbeb039e27ea5d1a6f5d63302}{%
+           family={Rijmen},
+           familyi={R\bibinitperiod},
+           given={Vincent},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag}%
+      }
+      \strng{namehash}{3967038944da1152e0568c52ebc551ab}
+      \strng{fullhash}{3967038944da1152e0568c52ebc551ab}
+      \strng{fullhashraw}{3967038944da1152e0568c52ebc551ab}
+      \strng{bibnamehash}{3967038944da1152e0568c52ebc551ab}
+      \strng{authorbibnamehash}{3967038944da1152e0568c52ebc551ab}
+      \strng{authornamehash}{3967038944da1152e0568c52ebc551ab}
+      \strng{authorfullhash}{3967038944da1152e0568c52ebc551ab}
+      \strng{authorfullhashraw}{3967038944da1152e0568c52ebc551ab}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{3-540-42580-2}
+      \field{title}{The Design of Rijndael: {AES} - The Advanced Encryption Standard}
+      \field{year}{2002}
+    \endentry
+    \entry{FIPS197}{report}{}{}
+      \name{author}{1}{}{%
+        {{hash=ef9cb61878e61d434507444346b29d1a}{%
+           family={{National Institute of Standards and Technology}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Federal Information Processing Standards Publication (FIPS)}%
+      }
+      \list{location}{1}{%
+        {Gaithersburg, MD}%
+      }
+      \strng{namehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{fullhash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{fullhashraw}{ef9cb61878e61d434507444346b29d1a}
+      \strng{bibnamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorbibnamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authornamehash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorfullhash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{authorfullhashraw}{ef9cb61878e61d434507444346b29d1a}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{11}
+      \field{note}{Updated version accessed 2025-11-02}
+      \field{number}{197}
+      \field{title}{Advanced Encryption Standard (AES)}
+      \field{type}{techreport}
+      \field{year}{2001}
+      \verb{urlraw}
+      \verb https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
+      \endverb
+      \verb{url}
+      \verb https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf
+      \endverb
+    \endentry
+    \entry{Stinson2018}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=db75d2e38077e5ce0d821db64705be8f}{%
+           family={Stinson},
+           familyi={S\bibinitperiod},
+           given={Douglas\bibnamedelima R.},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=9d59d8bc829e049698c87f8987cbe969}{%
+           family={Paterson},
+           familyi={P\bibinitperiod},
+           given={Maura\bibnamedelima B.},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Boca Raton, FL}%
+      }
+      \list{publisher}{1}{%
+        {CRC Press, Taylor \& Francis Group}%
+      }
+      \strng{namehash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{fullhash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{fullhashraw}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{bibnamehash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{authorbibnamehash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{authornamehash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{authorfullhash}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \strng{authorfullhashraw}{6f89bcc966b6be9ebac9fdb58c25dbda}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4th}
+      \field{isbn}{978-1-1381-9701-5}
+      \field{note}{See Section 4.2 “Substitution-Permutation Networks”.}
+      \field{title}{Cryptography: Theory and Practice}
+      \field{year}{2018}
+    \endentry
+    \entry{PresentImplementation}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=7dcda0ad9ab45f104ebc02580e375868}{%
+           family={Jacinto},
+           familyi={J\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=38342fbd4c66b9460ea112c365820d90}{%
+           family={Montiel},
+           familyi={M\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c347f3453a999ab093f49bc4c0e36632}{%
+           family={Martinez},
+           familyi={M\bibinitperiod},
+           given={Fernando},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{fullhash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{fullhashraw}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{bibnamehash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{authorbibnamehash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{authornamehash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{authorfullhash}{cf83084ee5f7cb054c54369663413e3b}
+      \strng{authorfullhashraw}{cf83084ee5f7cb054c54369663413e3b}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of Applied Engineering Research}
+      \field{month}{01}
+      \field{title}{Implementation of the cryptographic algorithm “present” in different microcontroller type embedded software platforms}
+      \field{volume}{12}
+      \field{year}{2017}
+      \field{pages}{8092\bibrangedash 8096}
+      \range{pages}{5}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

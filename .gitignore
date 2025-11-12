@@ -44,3 +44,6 @@ backup/
 __pycache__/
 *.pyc
 *.pyo
+
+# Implementation docs (private/work in progress)
+docs/impl/

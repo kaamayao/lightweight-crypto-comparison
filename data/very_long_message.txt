@@ -1,0 +1,35 @@
+CAPÍTULO I: LA EVOLUCIÓN DE LA CRIPTOGRAFÍA LIGERA
+
+En la era moderna de la computación ubicua, la seguridad criptográfica ha evolucionado de ser una preocupación principalmente para comunicaciones militares y gubernamentales a convertirse en un requisito esencial para dispositivos de consumo cotidiano. La proliferación de dispositivos del Internet de las Cosas (IoT), redes de sensores inalámbricos y sistemas embebidos ha creado nuevos desafíos para los diseñadores de protocolos criptográficos. Los algoritmos criptográficos tradicionales, aunque robustos y bien analizados, a menudo resultan demasiado intensivos en recursos para su implementación en dispositivos con restricciones severas en poder de procesamiento, memoria y consumo de energía.
+
+El concepto de criptografía ligera surgió en respuesta a estas restricciones. A diferencia de las primitivas criptográficas convencionales que fueron diseñadas asumiendo recursos computacionales abundantes, los algoritmos ligeros están diseñados desde cero para minimizar los requisitos de recursos mientras mantienen niveles de seguridad aceptables. Este cambio de paradigma ha llevado al desarrollo de numerosos cifrados especializados, funciones hash y protocolos de autenticación específicamente adaptados para entornos restringidos.
+
+CAPÍTULO II: CRITERIOS DE EVALUACIÓN
+
+Al comparar algoritmos criptográficos ligeros, se deben considerar varias métricas clave. Las métricas de rendimiento incluyen el rendimiento de cifrado medido en ciclos por byte o megabytes por segundo, latencia para procesar bloques o mensajes individuales y tiempo de configuración de claves. Las métricas de utilización de recursos abarcan el tamaño del código, los requisitos de RAM para almacenar el estado interno y, en implementaciones de hardware, equivalentes de compuertas o área de silicio. El consumo de energía es particularmente crítico para dispositivos alimentados por batería, donde el costo energético por byte cifrado impacta directamente la vida útil del dispositivo.
+
+El análisis de seguridad implica evaluar la resistencia a ataques conocidos incluyendo criptoanálisis diferencial, criptoanálisis lineal, ataques algebraicos y ataques de canal lateral. El margen de seguridad, definido como la diferencia entre el número de rondas en el cifrado y el número de rondas que pueden ser atacadas, proporciona información sobre la resistencia del algoritmo contra avances criptoanalíticos futuros.
+
+CAPÍTULO III: CIFRADOS LIGEROS CONTEMPORÁNEOS
+
+La criptografía ligera moderna abarca varias familias de algoritmos. ChaCha20, diseñado por Daniel J. Bernstein, representa una construcción ARX (Add-Rotate-XOR) que logra alto rendimiento en software mediante operaciones simples que se mapean eficientemente a procesadores modernos. Su variante ChaCha20-Poly1305 proporciona cifrado autenticado y ha sido adoptada en protocolos principales como TLS 1.3.
+
+AES, aunque no fue diseñado originalmente como un cifrado ligero, ha demostrado ser notablemente adaptable. Las implementaciones de hardware que utilizan técnicas como la eliminación de tablas T y diseños eficientes de cajas S han hecho que AES sea viable incluso para escenarios con recursos restringidos. El proceso de estandarización de Criptografía Ligera de NIST ha estimulado aún más la investigación en variantes optimizadas de AES.
+
+Los cifrados de bloque como PRESENT, SIMON y SPECK representan diseños ultra ligeros optimizados para implementación en hardware. PRESENT utiliza un tamaño de bloque de 64 bits con claves de 80 o 128 bits y logra huellas de silicio notablemente pequeñas. Las familias SIMON y SPECK de la NSA ofrecen un rango de tamaños de bloque y clave, permitiendo a los diseñadores seleccionar compensaciones apropiadas entre seguridad y rendimiento para sus aplicaciones específicas.
+
+CAPÍTULO IV: CONSIDERACIONES PRÁCTICAS
+
+Seleccionar un cifrado ligero apropiado requiere un análisis cuidadoso del contexto de implementación. Para dispositivos con soporte de aceleración de hardware, AES a menudo proporciona el mejor rendimiento. En implementaciones de software puro en microcontroladores, ChaCha20 frecuentemente ofrece un rendimiento superior. Para implementaciones de hardware extremadamente restringidas donde el conteo de compuertas es primordial, diseños especializados como PRESENT o SIMON pueden ser preferibles.
+
+Los requisitos de seguridad de la aplicación también deben guiar la selección del algoritmo. Los objetivos de alto valor que requieren seguridad a largo plazo deben favorecer algoritmos conservadores y bien analizados como AES. Las aplicaciones con horizontes de seguridad más cortos o datos de menor valor podrían aceptar algoritmos más nuevos con menos historial criptoanalítico a cambio de un mejor rendimiento.
+
+Las consideraciones de interoperabilidad no pueden ignorarse. Los algoritmos estandarizados como AES y ChaCha20 se benefician de una amplia disponibilidad de implementación, pruebas extensivas y aceptación generalizada. Los algoritmos propietarios o especializados pueden ofrecer ventajas teóricas pero pueden crear desafíos prácticos en sistemas heterogéneos que requieren comunicación entre diferentes tipos de dispositivos.
+
+CAPÍTULO V: DIRECCIONES FUTURAS
+
+El campo de la criptografía ligera continúa evolucionando rápidamente. La criptografía post-cuántica presenta nuevos desafíos, ya que los algoritmos resistentes a computación cuántica típicamente requieren significativamente más recursos computacionales que sus contrapartes clásicas. Desarrollar algoritmos post-cuánticos adecuados para dispositivos restringidos representa un área activa de investigación.
+
+Las aplicaciones emergentes en computación en el borde, redes 5G y sistemas autónomos crean nuevos requisitos para primitivas criptográficas que equilibran seguridad, rendimiento y consumo de recursos de maneras novedosas. El proceso en curso de estandarización de Criptografía Ligera de NIST tiene como objetivo identificar algoritmos adecuados para estos casos de uso emergentes.
+
+A medida que la Ley de Moore continúa, incluso los dispositivos restringidos ganan más capacidad computacional con el tiempo. Sin embargo, la tendencia hacia una computación cada vez más ubicua asegura que siempre habrá una clase de dispositivos extremadamente limitados en recursos para los cuales la criptografía ligera sigue siendo esencial. El desafío para los criptógrafos es continuar desarrollando algoritmos que proporcionen seguridad robusta mientras respetan las restricciones fundamentales impuestas por la física, la economía y los requisitos de aplicación en estos entornos con recursos limitados.

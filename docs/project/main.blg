@@ -1,0 +1,19 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'main.blg'
+[41] biber:342> INFO - === Sun Nov  2, 2025, 18:31:38
+[49] Biber.pm:421> INFO - Reading 'main.bcf'
+[88] Biber.pm:1002> INFO - Found 11 citekeys in bib section 0
+[97] Biber.pm:4487> INFO - Processing section 0
+[102] Biber.pm:4678> INFO - Looking for bibtex file 'BibliMSc.bib' for section 0
+[102] bibtex.pm:1713> INFO - LaTeX decoding ...
+[108] bibtex.pm:1519> INFO - Found BibTeX data source 'BibliMSc.bib'
+[182] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[182] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[182] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[182] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[187] bbl.pm:676> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[190] bbl.pm:779> INFO - Output to main.bbl
+[190] Biber.pm:132> WARN - legacy month field 'January' in entry 'DESChallenge' is not an integer - this will probably not sort properly.
+[190] Biber.pm:132> WARN - legacy month field 'October' in entry 'DESNSA' is not an integer - this will probably not sort properly.
+[190] Biber.pm:132> WARN - legacy month field 'November' in entry 'FIPS197' is not an integer - this will probably not sort properly.
+[190] Biber.pm:134> INFO - WARNINGS: 3

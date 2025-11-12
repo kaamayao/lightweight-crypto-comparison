@@ -1,0 +1,1 @@
+El veloz murciélago hindú comía feliz cardillo y kiwi. Este es un mensaje de longitud media que contiene múltiples oraciones y proporciona una cantidad razonable de datos para pruebas de cifrado. Incluye varios caracteres, signos de puntuación y espacios para asegurar que los algoritmos de cifrado manejen el texto estándar correctamente.
