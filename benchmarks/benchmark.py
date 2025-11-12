@@ -33,6 +33,9 @@ RAIZ_PROYECTO = os.path.dirname(DIRECTORIO_SCRIPT)
 DIRECTORIO_RESULTADOS = os.path.join(RAIZ_PROYECTO, "results")
 DIRECTORIO_DATOS = os.path.join(RAIZ_PROYECTO, "data")
 
+# Crear directorio de resultados si no existe
+os.makedirs(DIRECTORIO_RESULTADOS, exist_ok=True)
+
 sys.path.insert(0, RAIZ_PROYECTO)
 matplotlib.use("Agg")
 
