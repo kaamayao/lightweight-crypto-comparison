@@ -1,0 +1,708 @@
+\documentclass{beamer}
+\mode<presentation> {
+\usetheme{Madrid}
+}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\title[Criptografía Ligera]{Análisis Comparativo de Algoritmos de Criptografía Ligera}
+\author{Kevin Arturo Amaya Osorio}
+\institute[UNAL]{
+Universidad Nacional de Colombia \\
+\medskip
+\textit{kaamayao@unal.edu.co}
+}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Índice}
+\tableofcontents
+\end{frame}
+
+\section{Introducción}
+
+\begin{frame}
+\frametitle{¿Qué es la Criptografía Ligera? \cite{survey2024}}
+
+\begin{block}{Definición}
+La \textbf{criptografía ligera} (Lightweight Cryptography) es una rama de la criptografía que diseña algoritmos optimizados para dispositivos con recursos limitados.
+\end{block}
+
+\textbf{Características principales:}
+\begin{itemize}
+\item Bajo consumo de memoria (RAM y ROM)
+\item Menor consumo energético
+\item Implementaciones compactas en hardware
+\item Adecuada para IoT, RFID, sensores y sistemas embebidos
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Cifrado Simétrico y Cifrado de Bloque}
+
+\begin{block}{Cifrado Simétrico}
+Un esquema de cifrado simétrico es una tupla $(\mathcal{K}, \mathcal{M}, \mathcal{C}, E, D)$ donde:
+\begin{itemize}
+\item $\mathcal{K}$ es el espacio de claves, $\mathcal{M}$ el espacio de mensajes, $\mathcal{C}$ el espacio de textos cifrados
+\item $E: \mathcal{K} \times \mathcal{M} \rightarrow \mathcal{C}$ es la función de cifrado
+\item $D: \mathcal{K} \times \mathcal{C} \rightarrow \mathcal{M}$ es la función de descifrado
+\item $\forall k \in \mathcal{K}, \forall m \in \mathcal{M}: D(k, E(k, m)) = m$
+\end{itemize}
+\end{block}
+
+\vspace{-0.3cm}
+
+\begin{block}{Cifrado de Bloque}
+Es un cifrado simétrico donde $\mathcal{M} = \mathcal{C} = \{0,1\}^n$ para un tamaño de bloque $n$ fijo.
+\begin{itemize}
+\item $E_k: \{0,1\}^n \rightarrow \{0,1\}^n$ es una permutación (biyección)
+\item Para cada clave $k$, existe $E_k^{-1} = D_k$
+\item Tamaños típicos: $n = 64$ (DES, PRESENT) o $n = 128$ (AES)
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Confusión y Difusión (Shannon, 1945)}
+
+\begin{block}{Confusión}
+Hace que la relación entre el texto cifrado y la clave sea lo más compleja posible.
+\begin{itemize}
+\item Cada bit del texto cifrado debe depender de varios bits de la clave
+\item Se logra principalmente con \textbf{S-boxes} (tablas de sustitución)
+\item Objetivo: que cambiar un bit de la clave cambie muchos bits del resultado
+\end{itemize}
+\end{block}
+
+\begin{block}{Difusión}
+Dispersa la influencia de cada bit del texto plano a lo largo del texto cifrado.
+\begin{itemize}
+\item Cada bit del texto plano debe afectar muchos bits del texto cifrado
+\item Se logra con \textbf{permutaciones} y \textbf{operaciones de mezcla}
+\item Objetivo: que cambiar un bit del mensaje cambie ~50\% del resultado
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\section{Estructuras de Cifrado}
+
+\begin{frame}
+\frametitle{Red de Feistel \cite{des1977}}
+
+\begin{columns}[T]
+\begin{column}{0.4\textwidth}
+\includegraphics[height=0.75\textheight]{images/feistel_cipher.pdf}
+\end{column}
+\begin{column}{0.6\textwidth}
+\textbf{Características:}
+\begin{itemize}
+\item Divide el bloque en dos mitades (L, R)
+\item Aplica función F con subclave en cada ronda
+\item Resultado se XOR con la otra mitad
+\item Las mitades se intercambian
+\item \textbf{Ventaja}: Cifrado y descifrado usan la misma estructura
+\end{itemize}
+
+\textbf{Usado en:} DES, 3DES, Blowfish, Twofish
+\end{column}
+\end{columns}
+
+\tiny{Imagen: Wikimedia Commons (CC BY-SA 3.0)}
+\end{frame}
+
+\begin{frame}
+\frametitle{Red de Sustitución-Permutación (SPN) \cite{aes2001}}
+
+\begin{columns}[T]
+\begin{column}{0.4\textwidth}
+\includegraphics[height=0.7\textheight]{images/spn_network.png}
+\end{column}
+\begin{column}{0.6\textwidth}
+\textbf{Componentes:}
+\begin{itemize}
+\item \textbf{S-box}: Sustitución no lineal (confusión)
+\item \textbf{P-box}: Permutación de bits (difusión)
+\item \textbf{Key mixing}: XOR con subclave de ronda
+\end{itemize}
+
+\textbf{Características:}
+\begin{itemize}
+\item Múltiples rondas de S-P-Key
+\item Alta difusión y confusión
+\item Paralelizable en hardware
+\end{itemize}
+
+\textbf{Usado en:} AES, PRESENT, SHARK
+\end{column}
+\end{columns}
+
+\tiny{Imagen: Wikimedia Commons (CC BY-SA 3.0)}
+\end{frame}
+
+\begin{frame}
+\frametitle{Fundamentos Matemáticos de Seguridad}
+
+\begin{block}{Teorema de Luby-Rackoff (1988) - Feistel \cite{lubyrackoff1988}}
+Si la función de ronda $f$ es una \textbf{función pseudoaleatoria} (PRF) segura:
+\begin{itemize}
+\item \textbf{3 rondas} $\Rightarrow$ Permutación pseudoaleatoria (PRP)
+\item \textbf{4 rondas} $\Rightarrow$ Permutación pseudoaleatoria fuerte (SPRP)
+\end{itemize}
+Esto garantiza seguridad demostrable para redes de Feistel.
+\end{block}
+
+\begin{block}{Estrategia Wide Trail (2001) - SPN \cite{widetrail2001}}
+Diseñada por Daemen y Rijmen para AES:
+\begin{itemize}
+\item Maximiza el número de \textbf{S-boxes activas} en cualquier camino diferencial/lineal
+\item Usa el \textbf{branch number} para medir difusión
+\item Proporciona cotas demostrables contra criptoanálisis diferencial y lineal
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Feistel vs SPN: Comparación}
+
+\begin{table}[h]
+\centering
+\scriptsize
+\begin{tabular}{lcc}
+\toprule
+\textbf{Característica} & \textbf{Feistel} & \textbf{SPN} \\
+\midrule
+Cifrado = Descifrado & Sí (mismo código) & No (inversos) \\
+Paralelismo & Menor (mitad del bloque) & Mayor (bloque completo) \\
+S-box invertible & No requerido & Requerido \\
+Uso de recursos & Menor & Mayor \\
+Velocidad en hardware & Menor & Mayor \\
+Seguridad demostrable & Luby-Rackoff (1988) & Wide Trail (2001) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Trade-offs clave:}
+\begin{itemize}
+\item \textbf{Feistel}: Ideal para implementaciones con recursos limitados donde el mismo circuito sirve para cifrar y descifrar
+\item \textbf{SPN}: Ideal para alto rendimiento en hardware paralelo, pero requiere más área/código
+\end{itemize}
+
+\end{frame}
+
+\section{Características de los Algoritmos}
+
+\begin{frame}
+\frametitle{DES - Historia \cite{des1977}}
+
+\begin{block}{Origen}
+Desarrollado por IBM (1973-1974) basado en el cifrado \textbf{Lucifer} de Horst Feistel.
+\end{block}
+
+\textbf{Cronología:}
+\begin{itemize}
+\item \textbf{1973}: NBS (ahora NIST) solicita propuestas para un estándar de cifrado
+\item \textbf{1974}: IBM presenta una versión modificada de Lucifer
+\item \textbf{1975}: NSA colabora con IBM, reduce la clave de 112 a 56 bits
+\item \textbf{1977}: Publicado como FIPS PUB 46
+\item \textbf{1999}: Roto por fuerza bruta en 22 horas (EFF)
+\item \textbf{2002}: Reemplazado oficialmente por AES
+\end{itemize}
+
+\begin{alertblock}{Controversia}
+El diseño de las S-boxes fue clasificado. En 1990 se descubrió que resistían criptoanálisis diferencial, técnica que la NSA aparentemente conocía desde 1977.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{DES/3DES - Aplicaciones}
+
+\begin{itemize}
+\item Cifrado de PINs en cajeros ATM (estándar PCI PIN Security)
+\item Tarjetas EMV con chip — estándar global desde los años 90
+\item Sistemas de mensajería financiera interbancaria (SWIFT legacy)
+\item Terminales de punto de venta (POS) en comercios
+\item Sistemas legacy en bancos colombianos (migración a AES en curso)
+\end{itemize}
+
+\begin{alertblock}{Estado actual}
+NIST deprecó 3DES en 2023. EMVCo está migrando a AES.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{DES - Características \cite{des1977, survey2024}}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Característica} & \textbf{Valor} \\
+\midrule
+Año de publicación & 1977 \\
+Estructura & Red de Feistel \\
+Tamaño de clave & 56 bits (64 con paridad) \\
+Tamaño de bloque & 64 bits \\
+Número de rondas & 16 \\
+Nivel de seguridad & Bajo (obsoleto) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{alertblock}{Nota}
+ El DES fue declarado obsoleto en 2005 y es vulnerable a ataques de fuerza bruta con hardware moderno.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{DES - Implementación}
+
+\begin{enumerate}
+\item \textbf{Permutación inicial (IP)}: Reordena los 64 bits de entrada
+\item \textbf{16 rondas Feistel}:
+\begin{itemize}
+\item Bloque dividido en L (32 bits) y R (32 bits)
+\item $L_i = R_{i-1}$, \quad $R_i = L_{i-1} \oplus f(R_{i-1}, K_i)$
+\end{itemize}
+\item \textbf{Función f}: Expansión (32→48 bits) → XOR con subclave → 8 S-boxes (6→4 bits) → Permutación P
+\item \textbf{Permutación final (IP$^{-1}$)}: Inversa de IP
+\end{enumerate}
+
+\begin{block}{Key Schedule}
+56 bits de clave → 16 subclaves de 48 bits mediante rotaciones y permutaciones (PC-1, PC-2).
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{AES - Historia \cite{aes2001}}
+
+\begin{block}{La Competencia NIST (1997-2000)}
+Proceso abierto de 5 años para reemplazar DES. 15 candidatos de 12 países fueron evaluados por la comunidad criptográfica mundial.
+\end{block}
+
+\textbf{Cronología:}
+\begin{itemize}
+\item \textbf{1997}: NIST anuncia competencia para nuevo estándar
+\item \textbf{1998}: 15 candidatos presentados (Round 1)
+\item \textbf{1999}: 5 finalistas seleccionados (Round 2)
+\item \textbf{Oct 2000}: \textbf{Rijndael} es anunciado ganador
+\item \textbf{Nov 2001}: Publicado como FIPS PUB 197
+\end{itemize}
+
+\begin{block}{Creadores}
+Joan Daemen y Vincent Rijmen (Bélgica). El nombre ``Rijndael'' combina sus apellidos.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{AES - Aplicaciones}
+
+\begin{itemize}
+\item WiFi WPA2/WPA3 - estándar IEEE 802.11i
+\item HTTPS/TLS 1.3 - navegación web segura
+\item BitLocker, FileVault, VeraCrypt - cifrado de disco
+\item WhatsApp, Signal - mensajería end-to-end (documentado)
+\item Bancolombia: 23,000 dispositivos con BitLocker (Microsoft, 2021)
+\end{itemize}
+
+\begin{block}{Hardware}
+Intel AES-NI, AMD-V, ARM Cryptography Extensions - aceleración nativa en procesadores modernos.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{AES-128 - Características \cite{aes2001, survey2024}}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Característica} & \textbf{Valor} \\
+\midrule
+Año de publicación & 2001 \\
+Estructura & Red de Sustitución-Permutación (SPN) \\
+Tamaño de clave & 128 bits \\
+Tamaño de bloque & 128 bits \\
+Número de rondas & 10 \\
+Nivel de seguridad & Excelente \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{block}{Nota}
+AES es el estándar actual para cifrado simétrico (FIPS 197). Soporta también claves de 192 y 256 bits.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{AES-128 - Implementación}
+
+\begin{enumerate}
+\item \textbf{AddRoundKey}: XOR estado con subclave
+\item \textbf{10 rondas} (última sin MixColumns):
+\begin{itemize}
+\item \textbf{SubBytes}: Sustitución via S-box (inversión en $GF(2^8)$ + transformación afín)
+\item \textbf{ShiftRows}: Rotación de filas (0,1,2,3 posiciones)
+\item \textbf{MixColumns}: Multiplicación en $GF(2^8)$ por columna
+\item \textbf{AddRoundKey}: XOR con subclave de ronda
+\end{itemize}
+\end{enumerate}
+
+\begin{block}{Key Schedule}
+128 bits → 11 subclaves de 128 bits usando RotWord, SubWord y Rcon.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{PRESENT - Historia \cite{present2007}}
+
+\begin{block}{Origen}
+Desarrollado en 2007 por Orange Labs (Francia), Ruhr University Bochum (Alemania) y Technical University of Denmark.
+\end{block}
+
+\textbf{Cronología:}
+\begin{itemize}
+\item \textbf{2007}: Presentado en CHES 2007 (Vienna)
+\item \textbf{2012}: Estandarizado en ISO/IEC 29192-2
+\item \textbf{2014}: Incluido en ISO/IEC 29167-11 para RFID
+\item \textbf{2019}: Actualizado en ISO/IEC 29192-2:2019
+\end{itemize}
+
+\begin{block}{Objetivo de Diseño}
+Cifrado \textbf{ultra-ligero} donde seguridad y eficiencia en hardware son igualmente importantes. Solo 1570 GE (gate equivalents), competitivo con cifrados de flujo.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{PRESENT - Aplicaciones y Legado}
+
+\begin{itemize}
+\item Estándar ISO/IEC 29192-2 e ISO/IEC 29167-11
+\item Sin implementaciones comerciales confirmadas
+\item Su S-box y diseño influenciaron: GIFT, LED, PHOTON, SPONGENT
+\item \textbf{GIFT-COFB} (basado en PRESENT) fue finalista NIST 2021
+\end{itemize}
+
+\begin{alertblock}{Futuro}
+NIST seleccionó \textbf{ASCON} como estándar (2023). PRESENT no se usa directamente, pero su legado vive en cifrados modernos.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{PRESENT-80 - Características \cite{present2007, survey2024}}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Característica} & \textbf{Valor} \\
+\midrule
+Año de publicación & 2007 \\
+Estructura & Red de Sustitución-Permutación (SPN) \\
+Tamaño de clave & 80 bits (también 128 bits) \\
+Tamaño de bloque & 64 bits \\
+Número de rondas & 31 \\
+Nivel de seguridad & Adecuado para IoT \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{block}{Nota}
+PRESENT es un cifrado ultra-ligero diseñado para dispositivos con recursos limitados (ISO/IEC 29192-2:2012).
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{PRESENT-80 - Implementación}
+
+\begin{enumerate}
+\item \textbf{31 rondas}:
+\begin{itemize}
+\item \textbf{AddRoundKey}: XOR estado (64 bits) con subclave
+\item \textbf{S-box layer}: 16 S-boxes de 4 bits en paralelo
+\item \textbf{pLayer}: Permutación de bits (bit $i$ → bit $P(i)$)
+\end{itemize}
+\item \textbf{AddRoundKey final}: XOR con subclave 32
+\end{enumerate}
+
+\begin{block}{Características de diseño}
+\begin{itemize}
+\item S-box de 4 bits: máxima no-linealidad, mínimo hardware
+\item pLayer: solo cableado (0 GE en hardware)
+\item Total: 1570 GE - comparable a cifrados de flujo
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Comparación de Características \cite{survey2024}}
+
+\begin{table}[h]
+\centering
+\scriptsize
+\begin{tabular}{lccc}
+\toprule
+\textbf{Característica} & \textbf{DES} & \textbf{AES-128} & \textbf{PRESENT-80} \\
+\midrule
+Año de publicación & 1977 & 2001 & 2007 \\
+Estructura & Feistel & SPN & SPN \\
+Tamaño de clave (bits) & 56 & 128 & 80 \\
+Tamaño de bloque (bits) & 64 & 128 & 64 \\
+Número de rondas & 16 & 10 & 31 \\
+Nivel de seguridad & Bajo & Excelente & Adecuado IoT \\
+\bottomrule
+\end{tabular}
+\caption{Características estáticas de los algoritmos evaluados}
+\end{table}
+
+\textbf{SPN} = Red de Sustitución-Permutación
+
+\end{frame}
+
+\section{Benchmarks de Rendimiento}
+
+\begin{frame}
+\frametitle{Uso de Memoria \cite{bernstein2005}}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/memory_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Metodología:}
+\begin{itemize}
+\item \textbf{Memoria estática}: Tamaño de constantes (S-boxes, tablas de permutación) usando \texttt{sys.getsizeof()}
+\item \textbf{Memoria dinámica}: Pico de memoria durante cifrado/descifrado usando \texttt{tracemalloc}
+\item 100 iteraciones por algoritmo
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Latencia \cite{sotocruz2024}}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/latency_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Metodología:}
+\begin{itemize}
+\item Latencia por byte (µs/byte)
+\item 5000 iteraciones por algoritmo
+\item Fórmula:
+\end{itemize}
+\small
+\[
+\text{latencia} = \frac{\text{tiempo}}{n \times \text{bytes}} \times 10^6
+\]
+\normalsize
+\textbf{Interpretación:}
+\begin{itemize}
+\item Menor latencia = mejor rendimiento
+\item AES-128 es el más rápido (optimizado)
+\item PRESENT-80 prioriza bajo consumo sobre velocidad
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Throughput \cite{sotocruz2024}}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/throughput_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Metodología:}
+\begin{itemize}
+\item Throughput en KB/s
+\item 5000 iteraciones por algoritmo
+\item Fórmula:
+\end{itemize}
+\small
+\[
+\text{throughput} = \frac{n \times \text{bytes}}{\text{tiempo}}
+\]
+\normalsize
+\textbf{Interpretación:}
+\begin{itemize}
+\item Mide cuántos bytes se pueden cifrar/descifrar por segundo
+\item AES-128: 68 KB/s cifrado, 34 KB/s descifrado
+\item DES: ~63 KB/s balanceado
+\item PRESENT: ~38 KB/s (diseñado para hardware, no software)
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Consumo de Potencia y Energía \cite{sotocruz2024}}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/power_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Metodología:}
+\begin{itemize}
+\item Basado en utilización de CPU
+\item 5000 iteraciones por algoritmo
+\item Fórmulas:
+\end{itemize}
+\small
+\[
+\text{Potencia} = V \times I
+\]
+\[
+\text{Energía} = P \times \text{latencia}
+\]
+
+
+\normalsize
+\textbf{Interpretación:}
+\textbf{Para IoT:} Menor energía = mayor duración de batería
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Uso de Memoria RAM \cite{sotocruz2024}}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/ram_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Metodología:}
+\begin{itemize}
+\item Memoria pico durante ejecución
+\item 100 iteraciones por algoritmo
+\item Medición con \texttt{tracemalloc}
+\end{itemize}
+\normalsize
+\textbf{Interpretación:}
+\begin{itemize}
+\item \textbf{AES-128}: Más eficiente en RAM (17 KB enc, 14 KB dec)
+\item \textbf{DES}: Mayor consumo (80 KB enc, 58 KB dec)
+\item \textbf{PRESENT}: Intermedio (74 KB enc, 52 KB dec)
+\end{itemize}
+\textbf{Para IoT:} Dispositivos como MSP430 solo tienen 512 bytes de RAM
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Conclusiones}
+
+\begin{frame}
+\frametitle{Ataques Conocidos Más Efectivos}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Algoritmo} & \textbf{Ataque más efectivo} & \textbf{Complejidad} & \textbf{¿Práctico?} \\
+\midrule
+DES & Fuerza bruta & $2^{56}$ & Sí (horas) \\
+AES-128 & Biclique & $2^{126.1}$ & No \\
+PRESENT-80 & Fuerza bruta & $2^{80}$ & No (aún) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{block}{Observaciones}
+\begin{itemize}
+\item \textbf{DES}: Roto por EFF en 1998 (22 horas con hardware dedicado)
+\item \textbf{AES-128}: Biclique reduce de $2^{128}$ a $2^{126.1}$ — aún impracticable
+\item \textbf{PRESENT-80}: Margen de 80 bits es adecuado para IoT, pero no para largo plazo
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\section{Bibliografía}
+
+\begin{frame}
+\frametitle{Bibliografía (1/2)}
+
+\begin{thebibliography}{99}
+\scriptsize
+
+\bibitem{present2007}
+Bogdanov, A., et al. (2007).
+\textit{PRESENT: An Ultra-Lightweight Block Cipher}.
+CHES 2007, LNCS 4727, pp. 450-466.
+
+\bibitem{survey2024}
+Chatziadam, C., et al. (2025).
+\textit{A Survey on Efficient Lightweight Cryptography}.
+Technologies, 13(1), 3. MDPI.
+
+\bibitem{aes2001}
+Daemen, J., \& Rijmen, V. (2001).
+\textit{The Design of Rijndael: AES}.
+Springer-Verlag.
+
+\bibitem{widetrail2001}
+Daemen, J., \& Rijmen, V. (2001).
+\textit{The Wide Trail Design Strategy}.
+LNCS 2260, pp. 222-238.
+
+\bibitem{lubyrackoff1988}
+Luby, M., \& Rackoff, C. (1988).
+\textit{How to Construct Pseudorandom Permutations from PRFs}.
+SIAM J. Computing, 17(2), pp. 373-386.
+
+\end{thebibliography}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bibliografía (2/2)}
+
+\begin{thebibliography}{99}
+\scriptsize
+
+\bibitem{des1977}
+National Bureau of Standards (1977).
+\textit{Data Encryption Standard (DES)}.
+FIPS PUB 46.
+
+\bibitem{bernstein2005}
+Bernstein, D.J. (2005).
+\textit{Cache-timing attacks on AES}.
+\url{https://cr.yp.to/antiforgery/cachetiming-20050414.pdf}
+
+\bibitem{sotocruz2024}
+Soto-Cruz, J., et al. (2024).
+\textit{Efficient Lightweight Cryptography for Power-Constrained MCUs}.
+Technologies, 13(1), 3. MDPI.
+
+\end{thebibliography}
+
+\end{frame}
+
+\end{document}

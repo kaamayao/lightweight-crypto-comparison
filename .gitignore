@@ -1,0 +1,50 @@
+# LaTeX compilation artifacts in docs folder
+docs/*.pdf
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.lof
+docs/*.lot
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz
+docs/*.bbl
+docs/*.blg
+docs/*.bcf
+docs/*.run.xml
+docs/*.nav
+docs/*.snm
+docs/*.vrb
+docs/*.dvi
+docs/*.ps
+docs/*.gz
+docs/*.zip
+docs/*.tar.gz
+docs/*.rar
+docs/*.7z
+
+# LaTeX temporary files
+docs/*-blx.bib
+docs/*.idx
+docs/*.ilg
+docs/*.ind
+docs/*.loa
+docs/*.lol
+docs/*.upa
+docs/*.upb
+
+# Benchmark results directory
+results/
+
+# Backup folder
+backup/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Implementation docs (private/work in progress)
+docs/impl/
+docs/project/build/

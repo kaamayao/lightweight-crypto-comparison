@@ -1,0 +1,390 @@
+\documentclass{beamer}
+\mode<presentation> {
+\usetheme{Madrid}
+\setbeamertemplate{navigation symbols}{}
+}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\title[Criptografía Ligera - Pitch]{Análisis Comparativo de Algoritmos de Criptografía Ligera}
+\author{Kevin Arturo Amaya Osorio}
+\institute[UNAL]{
+Universidad Nacional de Colombia \\
+\medskip
+\textit{kaamayao@unal.edu.co}
+}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{¿Qué es la Criptografía Ligera?}
+
+\begin{block}{Definición}
+La \textbf{criptografía ligera} (Lightweight Cryptography) es una rama de la criptografía que diseña algoritmos optimizados para dispositivos con recursos limitados.
+\end{block}
+
+\textbf{Características principales:}
+\begin{itemize}
+\item Bajo consumo de memoria (RAM y ROM)
+\item Menor consumo energético
+\item Implementaciones compactas en hardware
+\item Adecuada para IoT, RFID, sensores y sistemas embebidos
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Cifrado Simétrico y Cifrado de Bloque}
+
+\begin{block}{Cifrado Simétrico}
+Un esquema de cifrado simétrico es una tupla $(\mathcal{K}, \mathcal{M}, \mathcal{C}, E, D)$ donde:
+\begin{itemize}
+\item $\mathcal{K}$ es el espacio de claves, $\mathcal{M}$ el espacio de mensajes, $\mathcal{C}$ el espacio de textos cifrados
+\item $E: \mathcal{K} \times \mathcal{M} \rightarrow \mathcal{C}$ es la función de cifrado
+\item $D: \mathcal{K} \times \mathcal{C} \rightarrow \mathcal{M}$ es la función de descifrado
+\item $\forall k \in \mathcal{K}, \forall m \in \mathcal{M}: D(k, E(k, m)) = m$
+\end{itemize}
+\end{block}
+
+\vspace{-0.3cm}
+
+\begin{block}{Cifrado de Bloque}
+Es un cifrado simétrico donde $\mathcal{M} = \mathcal{C} = \{0,1\}^n$ para un tamaño de bloque $n$ fijo.
+\begin{itemize}
+\item $E_k: \{0,1\}^n \rightarrow \{0,1\}^n$ es una permutación (biyección)
+\item Para cada clave $k$, existe $E_k^{-1} = D_k$
+\item Tamaños típicos: $n = 64$ (DES, PRESENT) o $n = 128$ (AES)
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Estructura: Red de Feistel}
+
+\begin{columns}[T]
+\begin{column}{0.4\textwidth}
+\includegraphics[height=0.7\textheight]{images/feistel_cipher.pdf}
+\end{column}
+\begin{column}{0.6\textwidth}
+\textbf{Funcionamiento:}
+\begin{itemize}
+\item Divide el bloque en dos mitades (L, R)
+\item Aplica función F con subclave en cada ronda
+\item Resultado se XOR con la otra mitad
+\item Las mitades se intercambian
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Ventaja clave:}
+\begin{itemize}
+\item El mismo circuito sirve para cifrar y descifrar
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Usado en:} DES, 3DES, Blowfish, Twofish
+
+\vspace{0.3cm}
+
+\begin{block}{Seguridad}
+Teorema de Luby-Rackoff (1988)
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Estructura: Red de Sustitución-Permutación (SPN)}
+
+\begin{columns}[T]
+\begin{column}{0.4\textwidth}
+\includegraphics[height=0.65\textheight]{images/spn_network.png}
+\end{column}
+\begin{column}{0.6\textwidth}
+\textbf{Componentes:}
+\begin{itemize}
+\item \textbf{S-box}: Sustitución no lineal (confusión)
+\item \textbf{P-box}: Permutación de bits (difusión)
+\item \textbf{Key mixing}: XOR con subclave de ronda
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Ventaja clave:}
+\begin{itemize}
+\item Alta paralelización en hardware
+\item Mayor velocidad en implementaciones optimizadas
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Usado en:} AES, PRESENT, SHARK
+
+\vspace{0.3cm}
+
+\begin{block}{Seguridad}
+Wide Trail Strategy (Daemen-Rijmen, 2001)\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Los Tres Algoritmos Evaluados}
+
+\begin{columns}[T]
+\begin{column}{0.33\textwidth}
+\begin{block}{\textbf{DES} (1977)}
+\scriptsize
+\begin{itemize}
+\item IBM + NSA
+\item Red de Feistel
+\item Clave: 56 bits
+\item Bloque: 64 bits
+\item 16 rondas
+\item \textcolor{red}{Roto en 22h (1999)}
+\end{itemize}
+\end{block}
+\end{column}
+
+\begin{column}{0.33\textwidth}
+\begin{block}{\textbf{AES-128} (2001)}
+\scriptsize
+\begin{itemize}
+\item Competencia NIST
+\item Red SPN
+\item Clave: 128 bits
+\item Bloque: 128 bits
+\item 10 rondas
+\item \textcolor{green}{Estándar actual}
+\end{itemize}
+\end{block}
+\end{column}
+
+\begin{column}{0.33\textwidth}
+\begin{block}{\textbf{PRESENT} (2007)}
+\scriptsize
+\begin{itemize}
+\item Orange Labs + Uni
+\item Red SPN
+\item Clave: 80 bits
+\item Bloque: 64 bits
+\item 31 rondas
+\item \textcolor{blue}{1570 GE (ultra-ligero)}
+\end{itemize}
+\end{block}
+\end{column}
+\end{columns}
+
+\vspace{0.3cm}
+
+\textbf{Aplicaciones:}
+\begin{itemize}
+\item \textbf{DES}: Cajeros ATM legacy, tarjetas EMV antiguas (deprecado)
+\item \textbf{AES}: WiFi, HTTPS, WhatsApp, BitLocker, aceleración AES-NI
+\item \textbf{PRESENT}: ISO/IEC 29192-2, influenció ASCON (NIST 2023)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Resultados: Rendimiento y Latencia}
+
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{../results/throughput_benchmark.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{../results/latency_benchmark.png}
+\end{column}
+\end{columns}
+
+\vspace{0.3cm}
+
+\textbf{Observaciones:}
+\begin{itemize}
+\item \textbf{AES-128}: 68 KB/s cifrado — El más rápido en software
+\item \textbf{DES}: 63 KB/s — Balanceado cifrado/descifrado
+\item \textbf{PRESENT}: 38 KB/s — Diseñado para hardware, no software
+\item En hardware dedicado, PRESENT sería más competitivo
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Resultados: Memoria RAM}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/ram_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Memoria pico durante cifrado:}
+\begin{itemize}
+\item \textbf{AES-128}: 17 KB
+\item \textbf{PRESENT}: 74 KB
+\item \textbf{DES}: 80 KB
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{¿Por qué importa?}
+\begin{itemize}
+\item MSP430: 512 bytes RAM
+\item ATtiny85: 512 bytes RAM
+\item ESP8266: 80 KB RAM
+\end{itemize}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{Nota}
+Implementación Python. En C/ASM los valores serían menores.
+\end{alertblock}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Resultados: Consumo Energético}
+
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\includegraphics[width=\textwidth]{../results/power_benchmark.png}
+\end{column}
+\begin{column}{0.45\textwidth}
+\textbf{Métricas:}
+\begin{itemize}
+\item Potencia (mW): similar entre los tres
+\item Energía por byte (µJ/byte): varía significativamente
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Implicaciones para IoT:}
+\begin{itemize}
+\item Menor energía/byte = Mayor duración de batería
+\item Sensores remotos: años sin recargar
+\item PRESENT optimizado para eficiencia en hardware
+\end{itemize}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Seguridad: Ataques Conocidos}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Algoritmo} & \textbf{Mejor Ataque} & \textbf{Complejidad} & \textbf{¿Práctico?} \\
+\midrule
+DES & Fuerza bruta & $2^{56}$ & \textcolor{red}{Sí (horas)} \\
+AES-128 & Biclique & $2^{126.1}$ & \textcolor{green}{No} \\
+PRESENT-80 & Fuerza bruta & $2^{80}$ & \textcolor{blue}{No (aún)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3cm}
+
+\textbf{Contexto:}
+\begin{itemize}
+\item \textbf{DES}: EFF lo rompió en 1998 con hardware de \$250,000 USD
+\item \textbf{AES-128}: Biclique reduce de $2^{128}$ a $2^{126.1}$ — aún impracticable
+\item \textbf{PRESENT-80}: 80 bits es adecuado para IoT de corta vida, pero no para datos de largo plazo
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusiones: ¿Cuál Elegir?}
+
+\begin{table}[h]
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Algoritmo} & \textbf{Throughput} & \textbf{RAM} & \textbf{Seguridad} & \textbf{Recomendación} \\
+\midrule
+DES & 63 KB/s & 80 KB & Obsoleto & \textcolor{red}{No usar} \\
+AES-128 & 68 KB/s & 17 KB & Excelente & \textcolor{green}{Uso general} \\
+PRESENT-80 & 38 KB/s & 74 KB & Adecuado & \textcolor{blue}{IoT restringido} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3cm}
+
+\begin{block}{Recomendaciones}
+\begin{itemize}
+\item \textbf{DES}: Solo valor histórico/educativo. Deprecado desde 2005.
+\item \textbf{AES-128}: Opción por defecto. Si tienes AES-NI, úsalo.
+\item \textbf{PRESENT-80}: Para RFID, sensores desechables, smart dust.
+\end{itemize}
+\end{block}
+
+\vspace{0.3cm}
+
+\begin{alertblock}{El Futuro: ASCON}
+NIST estandarizó \textbf{ASCON} en 2023 para criptografía ligera autenticada. Hereda ideas de PRESENT.
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Mensaje Final}
+
+\begin{center}
+\Large
+\textbf{La criptografía ligera no es simplemente hacer algoritmos más pequeños.}
+
+\vspace{0.8cm}
+
+\normalsize
+Es el arte de encontrar el \textbf{balance óptimo} entre tres factores en tensión:
+
+\vspace{0.5cm}
+
+\begin{columns}[c]
+\begin{column}{0.3\textwidth}
+\centering
+\textbf{Seguridad}
+\end{column}
+\begin{column}{0.3\textwidth}
+\centering
+\textbf{Rendimiento}
+\end{column}
+\begin{column}{0.3\textwidth}
+\centering
+\textbf{Recursos}
+\end{column}
+\end{columns}
+
+\vspace{0.8cm}
+
+\small
+Cada aplicación IoT tiene restricciones diferentes.\\
+Elegir el algoritmo correcto requiere entender tanto las limitaciones del hardware como los requisitos de seguridad.
+
+\vspace{1cm}
+
+\normalsize
+\end{center}
+
+\end{frame}
+
+\end{document}

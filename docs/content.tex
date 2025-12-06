@@ -1,0 +1,328 @@
+\section{Resumen}
+
+La Criptografía Ligera (Lightweight Cryptography, LWC) constituye un campo de investigación enfocado en desarrollar esquemas de cifrado robustos que minimicen drásticamente los recursos computacionales necesarios para su ejecución. Este campo ha cobrado relevancia debido a la proliferación de dispositivos con capacidad de cómputo limitada, como los sensores de Internet de las Cosas (IoT), redes vehiculares y dispositivos de monitoreo médico, que requieren asegurar sus comunicaciones a través de canales inseguros \parencite{SurveyLCW}. A diferencia de la criptografía clásica (e.g., RSA), los algoritmos LWC deben equilibrar no solo la seguridad del mensaje, sino también métricas críticas de eficiencia como el consumo de energía, la latencia y la restricción de recursos físicos (procesamiento, RAM, ROM y almacenamiento).
+
+Debido a las limitaciones de recursos, los algoritmos LWC pueden presentar vulnerabilidades que no son típicas de esquemas criptográficos robustos tradicionales. Entre ellas se incluyen: ataques basados en la reutilización de parámetros \parencite{PRESENT}, ataques multiset \parencite{BlockVsStream} o incluso ataques de fuerza bruta \parencite{DES}. Debido a la menor robustez inherente en términos de seguridad de estos esquemas, es importante evaluar el riesgo asumido al integrarlos en arquitecturas de comunicación. Por lo tanto, este trabajo se centrará en explorar la naturaleza de estos compromisos de seguridad y de rendimiento en sistemas de bajos recursos computacionales.
+
+\section{Objetivos}
+
+\begin{itemize}
+  \item Caracterizar el panorama de la Criptografía Ligera (LWC), identificando los algoritmos simétricos predominantes en entornos IoT, sus parámetros operativos clave y los desafíos de seguridad que pretenden mitigar.
+
+  \item Establecer una comparativa entre el rendimiento computacional (latencia, consumo energético) y la robustez criptográfica de los algoritmos seleccionados, prestando especial atención a las vulnerabilidades introducidas por las implementaciones en hardware.
+
+  \item Clasificar y documentar los principales vectores de ataque dirigidos a estos esquemas.
+\end{itemize}
+
+\section{Algoritmos analizados} 
+
+En este proyecto, el análisis se centrará exclusivamente en \textbf{algoritmos de encriptación simétricos}, ya que eliminan la necesidad de procedimientos de intercambio de claves separados y generalmente requieren menos recursos computacionales para su implementación en comparación con sus contrapartes asimétricos \cite{SurveyLCW}.
+
+Los cifrados simétricos se clasifican en dos tipos principales: cifrados en bloque y cifrados de flujo. Los \textbf{cifrados en bloque} dividen el mensaje original en bloques de $n$ bits de tamaño fijo para su procesamiento, y los de flujo operan secuencialmente, cifrando típicamente bit a bit o byte a byte, sin tamaños fijos. Los cifrados de bloque son considerados el estándar en una amplia mayoría de aplicaciones, impulsados por la popularidad de algoritmos como DES \parencite{SurveyLCW}. Aunque no se han demostrado debilidades conocidas en las implementaciones más comunes de algoritmos simétricos, este sigue siendo un campo de investigación activo, el estado del arte actual se enfoca en el desarrollo y análisis de diversos ataques como los algebraicos \parencite{BlockVsStream}. 
+
+\begin{definition}[Cifrado de Bloque de $n$-bits] 
+Sea $k$ la longitud de la clave (en bits) y $n$ la longitud del bloque (en bits). \begin{itemize} 
+  \item $V_n$ es el conjunto de todos los posibles vectores binarios de $n$-bits. Este conjunto representa el espacio de texto plano y el espacio de texto cifrado.
+  \item $V_k$ es el conjunto de todos los posibles vectores binarios de $k$-bits. Por ejemplo para $k=3$, $V_k = \{000, 001, 010, 011, 100, 101, 111\}$
+  \item $\mathcal{K}$ es el \textbf{espacio de claves válidas}, un subconjunto del conjunto $V_k$ ($\mathcal{K} \subseteq V_k$). 
+\end{itemize} 
+
+Un \textbf{cifrado de bloque $n$-bit} es una función $E: V_n \times \mathcal{K} \rightarrow V_n$ que opera sobre un bloque de texto plano $P \in V_n$ y una clave $K \in \mathcal{K}$. El resultado de la función es un bloque de texto cifrado $C$, lo cual se expresa como $C = E(P, K)$ o, de forma más concisa, $C = E_K(P)$. Esta función debe cumplir la condición de que, para cada clave $K \in \mathcal{K}$ fija, la función de cifrado $E_K(\cdot)$ es una \textbf{biyección} de $V_n$ a $V_n$. La función inversa es la función de descifrado, denotada $D_K: V_n \rightarrow V_n$, para la cual se cumple que \[ D_K(E_K(P)) = P \] para todo bloque de texto plano $P \in V_n$. 
+
+\end{definition}
+
+Por otra parte, los \textbf{cifrados de flujo} representan un campo de estudio criptográfico relativamente más reciente. Históricamente, su implementación ha sido menos estandarizada y, en general, han sido percibidos como menos seguros que los cifrados de bloque. No obstante, los cifrados de flujo ofrecen mayor velocidad de cifrado y demandan menor memoria. Si bien perdieron protagonismo como estándar frente al auge del DES, han experimentado un resurgimiento en popularidad. Esta tendencia se debe al creciente énfasis en el cifrado en tiempo real para aplicaciones modernas como la transmisión (streaming) de video y audio.
+
+El proyecto actual implementa exclusivamente \textbf{algoritmos de encriptado en bloque simétricos}, dado que los estándares dominantes en LWC son en su mayoría en bloque y los algoritmos de flujo todavía son un campo en desarrollo jóven. Los algoritmos que se van a explorar son: 
+
+\begin{enumerate}
+  \item $\textbf{Data Encryption Standard (DES):}$, derivado del algoritmo LUCIFER, fue publicado oficialmente el 15 de julio de 1977 por la Oficina Nacional de Estándares (NBS), y posteriormente adoptado como el estándar federal de cifrado por las agencias gubernamentales y entidades bancarias de EE.UU. \parencite{DES}. 
+
+    El DES utiliza una clave de 64 bits, de los cuales 56 bits son empleados para el secreto criptográfico y los 8 bits restantes se destinan a la corrección o verificación de paridad. La principal debilidad del algoritmo radicaba en la corta longitud de su clave ($\textit{56 bits}$). Ya en el momento de su publicación, criptógrafos como \textit{Diffie y Hellman} habían señalado la viabilidad teórica de construir una máquina capaz de romper la encriptación mediante un ataque de fuerza bruta \parencite{DESChallenge}. 
+
+    Un componente fundamental del \textit{DES} es el \textit{cifrado de Feistel}, el cual constituye un componente esencial en una amplia gama de algoritmos de cifrado por bloques. El funcionamiento general del algoritmo se describe a continuación \parencite{CryptoBookImpl}:
+
+    \begin{algorithm}[H]
+      \caption{Estructura de Feistel}\label{alg:feistel}
+      \textit{Entradas:}
+      \begin{itemize}[label=$\cdot$]
+        \item $P$ el bloque de texto plano de longitud $2m$ bits.
+        \item $N$ el número total de rondas.
+        \item $K_1,K_2,\cdots, K_N$ las subclaves de ronda.
+        \item $F$ la función de ronda, $F:\{0,1\}^m \times \{0,1\}^k \rightarrow \{0,1\}^m$
+      \end{itemize}
+      \hrulefill
+
+      \textit{Salida:} Un mensaje encriptado $C$.
+
+      \hrulefill
+
+      \textit{Procedimiento:}
+      \begin{enumerate}[label=\arabic*),start=1]
+        \item Sea $i = 0$
+        \item $L_0$ la mitad izquierda de $P$ ($m$ bits).
+        \item $R_0$ la mitad derecha de $P$ ($m$ bits).
+        \item Se calcula la nueva mitad 
+          \[
+            R_i = L_{i-1} \oplus F(R_{i-1}, K_i)
+          \]
+        \item Se asigna una nueva mitad izquierda como
+          \[
+            L_i = R_{i-1}
+          \]
+        \item Asignar $i = i+1$. Si $i > N$, se detiene el algoritmo.
+      \end{enumerate}
+    \end{algorithm}
+
+    La $\textit{función de ronda F}$ implementa operaciones XOR usan partes de la clave original $K$ para ofuscar la información original. Para el algoritmo $\textit{DES}$ se usan cajas de sustitución (\textit{S boxes}) y permutaciones que idealmente impiden el cálculo de una función inversa que descifra el mensaje $C$ sin el conocimiento de la clave $K$.
+
+    Para el algoritmo estándar DES se computan $N=16$ rondas de Feistel, la implementación es dada por \parencite{CryptoBookImpl}
+
+    \begin{algorithm}[H]
+      \caption{Algoritmo DES}\label{alg:des}
+      \textit{Entradas:}
+      \begin{itemize}[label=$\cdot$]
+        \item El mensaje $P = p_1, \cdots, p_{64}$.
+        \item La clave $K = k_1, \cdots, k_{64}$.
+      \end{itemize}
+      \hrulefill
+
+      \textit{Salida:} Un mensaje encriptado $C = c_1, \cdots, c_{64}$.
+
+      \hrulefill
+
+      \textit{Procedimiento:}
+      \begin{enumerate}[label=\arabic*),start=1]
+        \item $L_0$ la mitad izquierda de $P$ ($32$ bits).
+        \item $R_0$ la mitad derecha de $P$ ($32$ bits).
+        \item Se usa la tabla $IP$ definida en el estándar \parencite{DESNSA} para generar un mensaje $P'$ que es una permutación del mensaje original $P$ (ej. la entrada $0$ de la tabla es $58$, por lo tanto el bit $p'_0 = p_{58}$). Este paso se emplea para incrementar la $\textit{difusión}$ del mensaje original.
+        \item Se toma el mensaje permutado $P'$ y se divide en dos partes: $L_0 = p'_{33} \cdots p'_{64}$ y $R_0 = p'_{0} \cdots p'_{32}$ 
+        \item Sea $N = 16$ y $i=0$.
+        \item $i = i+1$
+        \item Usando la tabla $E$ de selección de bits dada en el estándar \parencite{DESNSA}, se tiene que, para la parte derecha $R_{i-1} = r_1, \cdots, r_{32}$, $T = r_{32}, r_1, r_2 \cdots r_{32}, r_1$. 
+        \item Sea $T' = T \oplus K_1$ 
+        \item Se definen $(B_1, \cdots, B_8) = T'$, donde $B_i$ son representaciones de 6 bits
+        \item $T'' = S_1(B_1), \cdots, S_8(B_8)$. Este mapeo usa cajas de $S_1$ a $S_8$ que son definidas en el apéndice 1 del estándar \parencite{DESNSA}.
+        \item Se usa la primitiva función $P$ definida en el estándar apéndice 1 \parencite{DESNSA} para definir $T'''= P(T'')$ 
+        \item Si $i > N$, entonces se pasa al paso (12)
+        \item Se intercambian los bloques $L_{16}$ y $R_{16}$ y se retorna el mensaje usando la tabla $IP^{-1}$
+          \[
+            C = IP^{-1}(b_1,\cdots,b_{64})
+          \]
+      \end{enumerate}
+    \end{algorithm}
+
+    Los pasos $6$ al $11$ se pueden ver como DES aplica una \textbf{estructura de Feistel} [\ref{alg:feistel}] 16 veces. En la aplicación real del algoritmo se requiere generar subclaves de $K$ cada cierto periodo de tiempo. Este paso se omite para la implementación en este proyecto y se pueden usar subclaves precalculadas, sin embargo, en las aplicaciones reales es importante notar que no se puede omitir este paso y debe hacerse regularmente.
+    \\\\
+    El algoritmo DES adquirió gran importancia por ser uno de los primeros estándares criptográficos de bloque publicados y ampliamente difundidos. Este hecho impulsó un intenso interés académico, lo que se tradujo tanto en el desarrollo de hardware optimizado para su implementación como en la investigación de métodos de criptoanálisis \cite{BlockVsStream}. Aunque el DES original se considera obsoleto debido a su corta longitud de clave de 64 bits, los principios fundamentales de su diseño no lo son. La arquitectura subyacente, la red de Feistel [\ref{alg:feistel}], sigue siendo un pilar en la criptografía simétrica moderna, siendo utilizada en numerosos algoritmos de bloque de Criptografía Ligera.
+    \\\\
+    Décadas de desarrollo han mitigado varias de sus vulnerabilidades principales del DES. La solución más notable es el $\textit{Triple-DES (3DES)}$, que consiste en aplicar el cifrado DES tres veces, corrigiendo efectivamente la debilidad de la longitud de clave y eliminando posibles ataques por fuerza bruta, aunque aplicar \textit{3DES} requiere más recursos y, por lo tanto, no es viable para varias aplicaciones de LWC \parencite{DES}. El interés por mantener y mejorar las implementaciones basadas en DES radica en la gran cantidad de hardware optimizado para este estándar \cite{BlockVsStream}, el reaprovechamiento de este hardware, especialmente en dispositivos con restricciones severas de recursos, ofrece ventajas considerables en términos de ahorro en tiempo de desarrollo y escalabilidad. 
+
+  \item \textbf{Advanced Encryption Standard (AES):}
+
+    Debido a las múltiples vulnerabilidades detectadas en el estándar DES, un hecho que quedó demostrado con el desarrollo del "DES-Cracker" \parencite{DESChallenge}, se anunció una iniciativa para seleccionar un nuevo estándar. El objetivo era que este nuevo algoritmo sustituyera a DES como el nuevo \textbf{Estándar Federal de Procesamiento de Información} (FIPS) \parencite{DaemenRijmen2002}. Sin embargo, es importante aclarar que este nuevo estándar no se concibió como un reemplazo total o directo de DES, ya que su alcance era más limitado. Se buscaba que fuera utilizado principalmente para documentos oficiales que fuesen secretos, pero no necesariamente clasificados. A diferencia de DES, este nuevo estándar tampoco fue diseñado para cubrir otras funciones específicas, como los protocolos de cifrado para información bancaria.
+
+    El estándar que finalmente resultó ganador fue el algoritmo Rijndael. Este fue seleccionado porque demostró funcionar eficientemente en una amplia gama de hardware, incluyendo dispositivos de bajas especificaciones, sin comprometer críticamente su seguridad. Además, el hecho de que este algoritmo esté disponible de forma libre y sin patentes, ha sido un factor clave que ha contribuido a su rápida y amplia adopción \parencite{DaemenRijmen2002}.
+
+    A diferencia del estándar DES, el algoritmo desarrollado por Rijndael tiene tres distintas especificaciones respecto a la longitud de la clave dependiendo de los bits: AES-128, AES-192 y AES-256. Para esta comparación en el marco de Criptografía Ligera, se busca implementar AES-128, con una clave $K$ de 128 bits, un tamaño de bloque de 4 y usan 10 rondas. El algoritmo es descrito como \parencite{FIPS197}:
+
+    \begin{algorithm}[H]
+      \caption{Algoritmo AES}\label{alg:aes}
+      \textit{Entradas:}
+      \begin{itemize}[label=$\cdot$]
+        \item El mensaje (bloque de datos) $P$, de $128$ bits (16 bytes).
+        \item La clave $K$, de $N_k$ bytes ($16, 24 \text{ o } 32$ bytes para $128, 192 \text{ o } 256$ bits, respectivamente).
+      \end{itemize}
+      \hrulefill
+
+      \textit{Salida:} Un mensaje encriptado $C$, de $128$ bits.
+
+      \hrulefill
+
+      \textit{Parámetros:}
+      \begin{itemize}[label=$\cdot$]
+        \item El número de rondas $N_r$: $10$ para clave de $128$ bits, $12$ para $192$ bits, $14$ para $256$ bits.
+        \item El array de $4 \times 4$ bytes llamado $\mathbf{State}$.
+        \item El $\mathbf{RoundKey}$ para cada ronda, derivado de $K$ por la Expansión de Clave.
+      \end{itemize}
+      \hrulefill
+
+      \textit{Procedimiento (AES-128 para $N_r=10$):}
+      \begin{enumerate}[label=\arabic*),start=1]
+        \item \textbf{Inicialización:} El bloque de entrada $P$ se copia al array $\mathbf{State}$.
+        \item \textbf{Expansión de Clave (Key Expansion):} Generar $N_r + 1$ claves de ronda $\mathbf{RoundKey}_0, \cdots, \mathbf{RoundKey}_{N_r}$.
+        \item \textbf{Ronda Inicial:}
+          \[ \mathbf{State} \leftarrow \mathbf{State} \oplus \mathbf{RoundKey}_0 \]
+        \item \textbf{Rondas Principales ($i = 1$ hasta $N_r-1$):} Repetir la secuencia de cuatro transformaciones:
+          \begin{enumerate}[label=\alph*.]
+            \item \textbf{SubBytes:} Cada byte en $\mathbf{State}$ se sustituye usando una S-box (Substitution Box) fija.
+            \item \textbf{ShiftRows:} Las filas del $\mathbf{State}$ se desplazan cíclicamente un número variable de bytes.
+            \item \textbf{MixColumns:} Se realiza una mezcla lineal de las columnas del $\mathbf{State}$ (multiplicación polinomial en $\text{GF}(2^8)$).
+            \item \textbf{AddRoundKey:} Se aplica la operación XOR al $\mathbf{State}$ con el $\mathbf{RoundKey}_i$ de la ronda actual.
+          \end{enumerate}
+        \item \textbf{Ronda Final ($i = N_r$):} Se repiten las primeras tres transformaciones, pero se \textbf{omite} la $\mathbf{MixColumns}$:
+          \begin{enumerate}[label=\alph*.]
+            \item \textbf{SubBytes}
+            \item \textbf{ShiftRows}
+            \item \textbf{AddRoundKey:} Se aplica XOR al $\mathbf{State}$ con el $\mathbf{RoundKey}_{N_r}$ final.
+          \end{enumerate}
+        \item \textbf{Salida:} El array $\mathbf{State}$ final es el mensaje cifrado $C$.
+      \end{enumerate}
+    \end{algorithm}
+
+    Cada una de las operaciones de SubBytes, ShiftRows, MixColumns y AddRoundKey son transformaciones lineales que están definidas en el estándar de AES \parencite{FIPS197}.
+
+    Por lo tanto, a diferencia del DES, que utiliza una Red de Feistel, el algoritmo Rijndael (AES) se basa en una Red de Sustitución-Permutación (SPN). La diferencia conceptual clave radica en cómo procesan el bloque de datos en cada ronda. Una red Feistel divide el bloque en dos mitades (L/R) y, en cada ronda, aplica las transformaciones solo a una mitad, la cual luego se combina con la otra mitad (que pasó intacta). En cambio, una red SPN trata el bloque de datos completo como una sola unidad (llamada "Estado" en AES) y aplica capas de transformaciones (sustituciones y permutaciones) a todo el estado en paralelo durante cada ronda. 
+
+    En general los algortimos SPN son dados de la siguiente manera \parencite{Stinson2018}
+
+\begin{algorithm}[H]
+    \caption{Algoritmo de Red de Sustitución-Permutación (SPN)}\label{alg:spn}
+    \textit{Entradas:}
+    \begin{itemize}[label=$\cdot$]
+        \item $P$ el bloque de texto plano de longitud $m$ bits.
+        \item $N$ el número total de rondas.
+        \item $K_0, K_1, \cdots, K_N$ las $N+1$ subclaves de ronda.
+        \item $S$ la función de sustitución (S-BOX), $S:\{0,1\}^m \rightarrow \{0,1\}^m$.
+        \item $L$ la capa de permutación/lineal (P-BOX), $L:\{0,1\}^m \rightarrow \{0,1\}^m$.
+    \end{itemize}
+    \hrulefill
+
+    \textit{Salida:} Un mensaje encriptado $C$.
+
+    \hrulefill
+
+    \textit{Procedimiento:}
+    \begin{enumerate}[label=\arabic*),start=1]
+        \item Sea $W$ el estado intermedio, $W = P$.
+        \item \textbf{Mezcla de Clave Inicial (Whitening):}
+        \[
+            W = W \oplus K_0
+        \]
+        \item \textbf{Rondas Principales:} Para $i = 1$ hasta $N-1$:
+        \begin{itemize}[label=--]
+            \item \textit{(Sustitución)} $W = S(W)$
+            \item \textit{(Permutación)} $W = L(W)$
+            \item \textit{(Mezcla de Clave)} $W = W \oplus K_i$
+        \end{itemize}
+        
+        \item \textbf{Ronda Final (sin permutación):}
+        \begin{itemize}[label=--]
+            \item \textit{(Sustitución)} $W = S(W)$
+            \item \textit{(Mezcla de Clave)} $W = W \oplus K_N$
+        \end{itemize}
+        
+        \item El cifrado resultante es $C = W$.
+    \end{enumerate}
+\end{algorithm}
+    Esta estructura SPN es mucho más adecuada para el procesamiento paralelo. Esto permite que los algoritmos que la usan, como AES, sean generalmente más rápidos y eficientes, ya que sus operaciones (ej. sustituir 16 bytes a la vez) son fáciles de optimizar y ejecutar simultáneamente en el hardware moderno \cite{DaemenRijmen2002}.
+
+  \item \textbf{PRESENT}
+
+    El algoritmo \textbf{PRESENT} marcó un paso importante en la evolución de los cifrados por bloques, redefiniendo las prioridades del diseño criptográfico. A diferencia de sus predecesores, que se optimizaban principalmente para la velocidad en software, el desarrollo de PRESENT se centró en la eficiencia de hardware, es decir, minimizar el espacio físico (área) requerido para su implementación en un chip.
+
+    Esta eficiencia se mide en \textbf{Equivalentes en Puertas (GE)}, y el artículo que introduce \textbf{PRESENT} \parencite{PRESENT} utiliza esta métrica para demostrar su ventaja de forma contundente. Mientras que los estándares establecidos como AES requerían aproximadamente $3600$ GE y DES unos $3200$ GE, PRESENT logró una implementación funcional con solo $2280$ GE \parencite{PRESENT}.
+
+    Esta drástica reducción en el costo de hardware permitió, por primera vez, integrar criptografía robusta en dispositivos de recursos extremadamente limitados (como etiquetas RFID o nodos de sensores), mejorando bastante la seguridad de un ecosistema de dispositivos.
+
+    La implementación del algoritmo es dada por \parencite{PresentImplementation}:
+
+    \begin{algorithm}[H]
+
+      \caption{Algoritmo PRESENT (Cifrado)}\label{alg:present}
+      \textit{Entradas:}
+      \begin{itemize}[label=$\cdot$]
+        \item El mensaje (bloque de datos) $P$, de $64$ bits.
+        \item La clave $K$, de $80$ bits (para la versión principal).
+      \end{itemize}
+      \hrulefill
+
+      \textit{Salida:} Un mensaje encriptado $C$, de $64$ bits.
+
+      \hrulefill
+
+      \textit{Parámetros:}
+      \begin{itemize}[label=$\cdot$]
+        \item El número de rondas $N_r$: $31$.
+        \item El registro de estado ($\mathbf{State}$), de $64$ bits.
+        \item $32$ subclaves de ronda ($\mathbf{RoundKey}_1, \dots, \mathbf{RoundKey}_{32}$), generadas por la Expansión de Clave.
+        \item La $\mathbf{SBOX}$ (sustitución de 4-bits).
+        \item La $\mathbf{P-LAYER}$ (permutación de 64-bits).\\
+      \end{itemize}
+      \hrulefill
+
+      \textit{Procedimiento (PRESENT-80 para $N_r=31$):}
+      \begin{enumerate}[label=\arabic*),start=1]
+        \item \textbf{Inicialización:} El bloque de entrada $P$ se copia al registro $\mathbf{State}$.
+        \item \textbf{Expansión de Clave (KeySchedule\_80bit):} Generar $32$ claves de ronda $\mathbf{RoundKey}_1, \dots, \mathbf{RoundKey}_{32}$ a partir de $K$.
+        \item \textbf{Rondas Principales ($i = 1$ hasta $N_r$ (31)):} Repetir la secuencia de tres transformaciones:
+          \begin{enumerate}[label=\alph*.]
+            \item \textbf{AddRoundKey:} Se aplica la operación XOR al $\mathbf{State}$ con el $\mathbf{RoundKey}_i$ de la ronda actual.
+              \[ \mathbf{State} \leftarrow \mathbf{State} \oplus \mathbf{RoundKey}_i \]
+            \item \textbf{sBoxLayer:} Cada uno de los 16 nibbles (4-bits) en $\mathbf{State}$ se sustituye usando la $\mathbf{SBOX}$.
+            \item \textbf{pLayer:} Los 64 bits del $\mathbf{State}$ se permutan según la $\mathbf{P\_LAYER}$.
+          \end{enumerate}
+        \item \textbf{Ronda Final (Post-blanqueo):} Se aplica la última clave de ronda:
+          \begin{enumerate}[label=\alph*.]
+            \item \textbf{AddRoundKey:} Se aplica XOR al $\mathbf{State}$ con el $\mathbf{RoundKey}_{32}$ final.
+              \[ \mathbf{State} \leftarrow \mathbf{State} \oplus \mathbf{RoundKey}_{32} \]
+          \end{enumerate}
+        \item \textbf{Salida:} El registro $\mathbf{State}$ final es el mensaje cifrado $C$.
+      \end{enumerate}
+    \end{algorithm}
+
+Al igual que otros estándares de cifrado, los componentes fundamentales de PRESENT, tales como la SBOX, el algoritmo de expansión de clave (que genera 32 claves de ronda o \textit{Round Keys}) y la capa de permutación ($P$-$LAYER$), están todos definidos en su especificación oficial \parencite{PRESENT}. PRESENT soporta claves de $128$ bits; esta comparativa se centra en su versión de $80$ bits.
+
+PRESENT, un estándar desde 2007, fue durante una década uno de los algoritmos más influyentes en el desarrollo de la \textit{Criptografía Ligera}. A diferencia de AES, no fue diseñado para un uso universal, sino para aplicaciones específicas. Esto se evidencia en su uso de operaciones nativas de 4 bits, las cuales, si bien son lentas en procesadores de 32 o 64 bits, son extremadamente eficientes en hardware con recursos muy limitados.
+
+Este enfoque optimizado implica ciertos sacrificios de diseño, entre los que se incluyen:
+
+\begin{itemize}
+    \item Dificultad para realizar un refresco de clave (\textit{re-keying}) de forma regular, dependiendo de las limitaciones del dispositivo.
+    \item No está optimizado para procesar grandes volúmenes de mensajes a alta velocidad (bajo \textit{throughput}).
+    \item Requeriría más espacio (hardware) del especificado en el estándar si se necesita gestionar un alto rendimiento.
+    \item Menor velocidad de ejecución en comparación con AES en plataformas de 32 o 64 bits.
+\end{itemize}
+
+A cambio, PRESENT ofrece un estándar robusto y probado para dispositivos de baja potencia sin debilidades criptográficas significativas conocidas, siendo ideal para implementaciones en sensores y dispositivos de comunicación con recursos restringidos.
+
+PRESENT, al igual que AES, reemplaza la clásica estructura de Feistel \ref{alg:feistel} por una red de sustitución-permutación (SPN) \ref{alg:spn}. Esta elección de diseño le confiere ventajas significativas en paralelismo. Sin embargo, existe una contrapartida: dado que sus operaciones internas manipulan datos en fragmentos de 4 bits, su rendimiento en implementaciones por software es probablemente inferior al de DES
+
+\end{enumerate}
+
+\section{Análisis comparativo}
+
+Para obtener métricas de rendimiento relevantes para dispositivos de recursos limitados, las pruebas se ejecutarán en una máquina de escritorio estándar x86-64, utilizando implementaciones en Python. Esto servirá para validar la lentitud teórica de PRESENT en software de propósito general, y la capacidad de adaptación de DES y AES a hardware moderno. Se medirán las siguientes métricas:
+
+\begin{itemize}
+\item \textbf{Rendimiento:} Se medirá la velocidad de cifrado y descifrado en Megabytes por segundo (MB/s) o ciclos de CPU por byte. Se utilizarán conjuntos de datos de varios tamaños (ej. 1KB, 128KB, 1MB) para evaluar la escalabilidad.
+\item \textbf{Uso de Memoria:} Se medirá el tamaño del código compilado (en Kilobytes) para cada algoritmo. Esta es una métrica crítica para LWC, ya que el almacenamiento en dispositivos IoT es muy limitado.
+\item \textbf{Uso de Memoria:} Se medirá el uso pico de RAM durante la ejecución del cifrado y descifrado para determinar la viabilidad del algoritmo en dispositivos con memoria volátil escasa (ej. < 64KB RAM).
+\end{itemize}
+
+\subsection{Tabla Comparativa de Resultados}
+
+Finalmente, los datos teóricos y empíricos recopilados se sintetizarán en una tabla comparativa la siguiente manera
+
+\begin{table}[h]
+\centering
+\caption{Ejemplo de Matriz de Comparación de Algoritmos}
+\label{tab:comparativa}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{DES} & \textbf{AES-128} & \textbf{PRESENT-80} \\ \hline
+Tipo de Estructura & Feistel & SPN & SPN \\ \hline
+Tamaño de Bloque (bits) & 64 & 128 & 64 \\ \hline
+Tamaño de Clave (bits) & 56 & 128 & 80 \\ \hline
+Seguridad Teórica (bits) & 56 & 128 & 80 \\ \hline
+Rondas & 16 & 10 & 31 \\ \hline
+Rendimiento (Software) [MB/s] & \textit{(experimental)} & \textit{(experimental)} & \textit{(experimental)} \\ \hline
+Uso de ROM (Flash) [KB] & \textit{(experimental)} & \textit{(experimental)} & \textit{(experimental)} \\ \hline
+Uso de RAM (Pico) [KB] & \textit{(experimental)} & \textit{(experimental)} & \textit{(experimental)} \\ \hline
+Área en Hardware (GE) & \textasciitilde 3200 & \textasciitilde 3600 & \textbf{\textasciitilde 2280} \\ \hline
+Resistencia SCA & Baja & Media & Media \\ \hline
+\end{tabular}
+\end{table}
+
+Para esta comparativa, las implementaciones se basarán estrictamente en los estándares publicados de cada algoritmo. Se ha decidido no utilizar bibliotecas criptográficas nativas (ej. OpenSSL) para evitar que optimizaciones de plataforma no especificadas sesguen los resultados del rendimiento. Además, las pruebas de rendimiento se ejecutarán utilizando el sistema de emulación QEMU. Esto permitirá evaluar los algoritmos en diversos entornos controlados que simulan fielmente las máquinas de bajos recursos.
+

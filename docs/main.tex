@@ -1,0 +1,79 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{xcolor,graphicx}
+\usepackage{float}
+\usepackage{ragged2e}
+\restylefloat{Table}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{hyperref}
+
+% Define theorem-like environments
+\newtheorem{theorem}{Teorema}
+\newmdtheoremenv[
+	linewidth=1pt,
+	linecolor=gray,
+	leftmargin=0pt,
+	innerleftmargin=10pt,
+	innerrightmargin=10pt,
+	innertopmargin=10pt,
+	innerbottommargin=10pt,
+	topline=false,
+	rightline=false,
+	bottomline=false
+]{definition}{Definición}
+\addbibresource{bibliography/BibliMSc.bib}
+
+\newcommand{\celda}[1]{
+	\begin{minipage}{2cm}
+		\vspace{2mm}
+		#1
+		\vspace{2mm}
+	\end{minipage}
+}
+\definecolor{azul}{rgb}{0.36, 0.54, 0.66}
+\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00
+cm]{geometry}
+
+% Increase spacing between paragraphs
+\setlength{\parskip}{1em}
+% Remove paragraph indentation (optional, since you have spacing)
+\setlength{\parindent}{0pt}
+
+\author{ Kevin Arturo Amaya Osorio}
+
+
+\begin{document}
+
+	\begin{figure}[H]
+		\raggedright
+		\includegraphics[scale=0.7]{images/escudo.png} \hfill
+	\end{figure}
+	
+	\vspace{1mm}
+	\begin{center}
+		{\Large \textbf{Proyecto criptografía}}
+		\vspace{0.5mm}  \\
+		{\large \textbf{Primer Avance}}\\
+		\vspace{0.5mm}  
+		\vspace{2mm}
+		{\textbf{Análisis Comparativo de Algoritmos de Criptografía Ligera}}\\
+		\vspace{0.5mm}  
+		\vspace{2mm}
+		{Kevin Arturo Amaya Osorio}\\
+		\vspace{2mm}
+	\end{center}
+
+
+\input{content}
+
+\printbibliography
+
+\end{document}
